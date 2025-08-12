@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Particle Background - Example Usage</title>
+    
+    <!-- Three.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: #000;
+            color: white;
+        }
+        
+        .section {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .content {
+            text-align: center;
+            z-index: 2;
+            position: relative;
+        }
+        
+        .section1 {
+            background: linear-gradient(45deg, #1a1a2e, #16213e);
+        }
+        
+        .section2 {
+            background: linear-gradient(45deg, #0f3460, #16537e);
+        }
+        
+        .section3 {
+            background: linear-gradient(45deg, #533483, #7b4397);
+        }
+        
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        p {
+            font-size: 1.2rem;
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Section 1 -->
+    <section class="section section1" id="section1">
+        <div class="content">
+            <h1>Section 1</h1>
+            <p>This section has blue particles</p>
+        </div>
+    </section>
+
+    <!-- Section 2 -->
+    <section class="section section2" id="section2">
+        <div class="content">
+            <h1>Section 2</h1>
+            <p>This section has green particles</p>
+        </div>
+    </section>
+
+    <!-- Section 3 -->
+    <section class="section section3" id="section3">
+        <div class="content">
+            <h1>Section 3</h1>
+            <p>This section has red particles</p>
+        </div>
+    </section>
+
+    <!-- Include the Particle Background Script -->
+    <script src="js/particle-background.js"></script>
+
+    <script>
+        // Wait for DOM to load
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            // Example 1: Basic usage with default options
+            const particles1 = new ParticleBackground({
+                container: '#section1',
+                particleColor: 0x4a90e2, // Blue
+                particleCount: 300
+            });
+
+            // Example 2: Custom configuration
+            const particles2 = new ParticleBackground({
+                container: '#section2',
+                particleColor: 0x4caf50, // Green
+                particleCount: 400,
+                particleSize: 0.15,
+                rotationSpeed: { x: 0.001, y: 0.002 },
+                particleRange: { x: 15, y: 10, z: 15 }
+            });
+
+            // Example 3: Static method for easy creation
+            const particles3 = ParticleBackground.createForElement('#section3', {
+                particleColor: 0xff5722, // Red
+                particleCount: 250,
+                particleSize: 0.08,
+                rotationSpeed: { x: 0.0002, y: 0.0009 }
+            });
+
+            // Example 4: Dynamic color changing
+            setTimeout(() => {
+                particles1.updateParticleColor(0x9c27b0); // Purple
+                particles2.updateParticleColor(0xff9800); // Orange
+                particles3.updateParticleColor(0x2196f3); // Light Blue
+            }, 5000);
+
+            // Example 5: Store references for later use
+            window.myParticles = {
+                section1: particles1,
+                section2: particles2,
+                section3: particles3
+            };
+        });
+
+        // Example function to demonstrate dynamic updates
+        function changeAllColors() {
+            const colors = [0xff6b6b, 0x4ecdc4, 0x45b7d1, 0x96ceb4, 0xffeaa7];
+            
+            Object.values(window.myParticles).forEach((particles, index) => {
+                particles.updateParticleColor(colors[index % colors.length]);
+            });
+        }
+
+        // Example: Call changeAllColors after 10 seconds
+        setTimeout(changeAllColors, 10000);
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,93 @@
+PROJECT: VIRUZVERSE — Full UI + Product Section — React (Vite) application
+
+SUMMARY:
+Build a production-ready, multi-page web application for VIRUZVERSE with a futuristic dark UI. Primary purpose: present company solutions, VR/3D work, and a dedicated Products area to display developed projects (cybersecurity modules, apps, VR demos). Provide both public-facing pages and an Admin Dashboard for content & product management.
+
+TECH STACK & DELIVERY REQUIREMENTS:
+- React (Vite) with JavaScript (JSX). Use functional components only.
+- Prefer minimal dependencies. Allowed: react-router-dom, axios/fetch, small chart lib (recharts) optional. Avoid Tailwind or external CSS frameworks.
+- *Styling rule:* Use internal CSS <style> tags and inline CSS properties. Do NOT use external CSS files or Tailwind. Keep design tokens as CSS variables within a root/global <style>.
+- Provide a runnable repo structure with README, package.json, and scripts: start (dev), build, preview.
+- Include a mock API (json-server or a simple /mock folder with JSON) so app runs without backend.
+- Provide clear README with dev setup steps.
+
+BRAND & THEME:
+- Background: #0a0a0a
+- Text: #ffffff
+- Accent gradient (primary): linear-gradient(45deg, #a34b6e 0%, #6e4bc3 50%, #45b7d1 100%)
+- Button hover: bright gradient glow using same colors
+- Card surface: rgba(255,255,255,0.03) with soft rounded corners (12px)
+- Glow & shadow: e.g., box-shadow: 0 8px 30px rgba(110,75,195,0.16); subtle neon border glow on hover
+- Fonts: modern sans-serif (Poppins/Inter), fallback system sans-serif
+
+PAGES (minimum):
+1. Landing / Home (Hero) — gradient title, CTA "Explore Now"
+2. Solutions (cards for GetMe, Broker App, CafeAura, BillBro, Invoicify)
+3. VR & 3D (showcase gallery + 3D viewer placeholder)
+4. Products (NEW — main products listing)
+5. Product Detail (deep dive, images, features, demo links, download)
+6. Features / Services (Sentinel AI + security modules)
+7. About (developer + social links)
+8. Login / Signup (auth flows)
+9. Admin Dashboard (overview, products manager, users, analytics, settings)
+10. 404 Page
+
+NAVIGATION & LAYOUT:
+- Global header: logo (left), nav links (center/left), right: Login / CTA. Sticky top with translucent backdrop blur.
+- Mobile: hamburger that opens full-screen gradient drawer. Active nav items highlighted using #a34b6e / #6e4bc3.
+- Footer: contact, socials (gradient icons), quick links.
+
+PRODUCTS SECTION (DETAILED — REQUIRED):
+A. Public Products Listing (route: /products)
+- Top toolbar: Search input (debounced), category filter dropdown (Cybersecurity, VR/3D, Mobile App, Utilities), tag chips, sort (Newest, Popular, Rating), view toggle (grid/list).
+- Grid: responsive cards (3 columns desktop, 2 tablet, 1 mobile).
+- Product Card UI:
+  - Left/top: image thumbnail or 3D placeholder (square).
+  - Title, short description (truncate to 120 chars), category badge, tech-stack chips, rating stars, small metrics (downloads/users).
+  - Primary CTA: "View Details" (opens product detail route or modal).
+  - Secondary CTA: "Live Demo" if demo_url present.
+  - Hover state: slight scale (1.02), neon border glow, reveal 2–3 key features as tooltip or overlay.
+- Tag chips show counts and are clickable to filter.
+
+B. Product Detail (route: /products/:slug or /products/:id)
+- Hero area: large banner with gradient overlay, Title, primary badges (Published / Enterprise / Open), tags.
+- Two-column layout (desktop):
+  - Left: image carousel + optional 3D viewer (glTF/three.js) placeholder, screenshot thumbnails.
+  - Right: product summary, metrics, quick CTAs (Live Demo, Repo, Download), short feature bullets, tech stack icons, pricing/licensing label.
+- Sections below:
+  - Full description (markdown support)
+  - Key features (icon list)
+  - Roadmap / Changelog (timeline)
+  - Related products (carousel)
+  - Request Access form (for enterprise sealed products) — simple modal with name/email/company/message.
+- Ensure proper OG meta for shareability (title, description, banner image, url).
+
+C. Admin Product Management (route: /admin/products)
+- Table/list of products with columns: thumbnail, title, category, status (Draft/Published), created_at, actions (edit, delete, preview).
+- Product Editor form (create/edit):
+  - Title, slug (auto-generate with edit), short_description, long_description (rich text/markdown), category, tags (createable), tech_stack (multi-select), images upload (drag & drop), 3D asset upload (.gltf/.glb optional), demo_url, repo_url, status, featured toggle, publish date.
+  - Validation: required fields, file type & size checks.
+  - Preview mode: open product detail as user would see (preview with draft badge).
+- History / versions panel (store version snapshots when publishing).
+
+UI & INTERACTIONS (details):
+- Primary gradient: linear-gradient(45deg, #a34b6e 0%, #6e4bc3 50%, #45b7d1 100%);
+- Primary button: background gradient, border-radius 10px, padding 10px 18px, box-shadow neon glow on hover.
+- Secondary button: transparent with gradient border (use mask or pseudo-element) and subtle glow on hover.
+- Focus states: visible focus ring using subtle glow (accessible).
+- Use subtle parallax/3D tilt on hero illustrations and product hero images.
+- Transitions: 200–350ms ease for hover/scale/opacity.
+- Prefers-reduced-motion respect: no auto-floating, reduce animations.
+- Loading states: skeleton loaders for lists, spinner for actions.
+
+ACCESSIBILITY:
+- Color contrast: ensure text >= 4.5:1 on backgrounds; use white text on dark bg.
+- All images have alt text.
+- Keyboard navigation: all interactive elements reachable, forms have labels, ARIA roles where appropriate.
+- Provide skip-to-content anchor.
+
+RESPONSIVE BREAKPOINTS:
+- Mobile: <= 640px
+- Tablet: 641px - 1024px
+- Desktop: >= 1025px
+- Ensure nav collapses, grid changes columns, font sizes scale.

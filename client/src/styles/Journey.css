@@ -1,0 +1,77 @@
+/* Final Polished Journey Page Background */
+
+.journey-timeline-section {
+  position: relative;
+  overflow: hidden;
+  background-color: #0f0f17;
+  z-index: 1;
+}
+
+.journey-timeline-section::before {
+  content: '';
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  top: -50%;
+  left: -50%;
+  background: 
+    radial-gradient(ellipse at 25% 40%, hsla(250, 100%, 67%, 0.2) 0%, transparent 50%),
+    radial-gradient(ellipse at 75% 60%, hsla(250, 100%, 67%, 0.15) 0%, transparent 40%);
+  animation: slow-pan 45s linear infinite alternate;
+  z-index: -1;
+}
+
+@keyframes slow-pan {
+  from { transform: rotate(0deg) translate(20px, -20px); }
+  to { transform: rotate(180deg) translate(-20px, 20px); }
+}
+
+.journey-timeline-path::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -5px;
+  right: -5px;
+  bottom: 0;
+  background: linear-gradient(#7b5cff, #4e9eff, #7b5cff);
+  z-index: -1;
+  filter: blur(8px);
+  animation: soft-pulse 6s ease-in-out infinite;
+}
+
+@keyframes soft-pulse {
+  0%, 100% { opacity: 0.15; }
+  50% { opacity: 0.3; }
+}
+
+/* --- Particle Background (Left Side) --- */
+.journey-particle-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50%; /* Confine container to left half */
+  height: 100%;
+  z-index: -1;
+  overflow: hidden;
+}
+
+.journey-particle {
+  position: absolute;
+  background-color: #7b5cff;
+  border-radius: 50%;
+  animation: faint-float 50s infinite linear;
+}
+
+@keyframes faint-float {
+  0% {
+    transform: translateY(110vh) scale(0.4);
+    opacity: 0;
+  }
+  10%, 90% {
+    opacity: 0.08; /* Very low opacity */
+  }
+  100% {
+    transform: translateY(-10vh) scale(0.8);
+    opacity: 0;
+  }
+}
