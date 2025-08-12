@@ -1,13 +1,10 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'wouter';
 
-
-
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isAboutDropdownOpen, setIsAboutDropdownOpen] = useState(false);
   const [location] = useLocation();
-  
 
   const navItems = [
     { path: '/', label: 'Home' },
@@ -40,16 +37,38 @@ export default function Header() {
       justifyContent: 'space-between',
       alignItems: 'center',
     },
-    logo: {
+    logoContainer: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '5px',
+      textDecoration: 'none',
+      outline: 'none',
+      border: 'none',
+      position: 'relative',
+      left: '-150px', // fully left aligned
+    },
+    logoImage: {
+      height: '100px',
+      width: 'auto',
+      objectFit: 'contain',
+      position: 'relative',
+      top: '-30px', // moved slightly higher
+      left: '-390px'
+    },
+    logoText: {
       fontSize: '40px',
       fontWeight: 700,
       textDecoration: 'none',
       outline: 'none',
       border: 'none',
+      color: '#fff',
+      marginLeft: '10px',
+      left: '200px', // adjust text position
     },
     nav: {
       display: 'flex',
-      gap: '24px',
+      gap: '50px',
+      marginLeft: '50%', // push nav links to right corner
     },
     navMobile: {
       display: 'none',
@@ -167,6 +186,12 @@ export default function Header() {
     },
     chevronRotated: {
       transform: 'rotate(180deg)',
+    },
+    rightSection: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '32px',
+      marginLeft: 'auto', // push to right
     }
   };
 
@@ -174,22 +199,11 @@ export default function Header() {
     @media (max-width: 768px) {
       .nav-desktop { display: none !important; }
       .mobile-menu-btn { display: block !important; }
+      .logo-text { font-size: 28px !important; }
+      .logo-image { height: 48px !important; }
     }
     
-    /* Remove focus outlines and borders on all clickable elements */
     a:focus, a:active, button:focus, button:active {
-      outline: none !important;
-      border: none !important;
-      box-shadow: none !important;
-    }
-    
-    .nav-link-enhanced:focus, .nav-link-enhanced:active {
-      outline: none !important;
-      border: none !important;
-      box-shadow: none !important;
-    }
-    
-    .text-gradient:focus, .text-gradient:active {
       outline: none !important;
       border: none !important;
       box-shadow: none !important;
@@ -202,130 +216,113 @@ export default function Header() {
       <header style={styles.header}>
         <div className="container">
           <div style={styles.headerContent}>
-            <Link href="/" style={styles.logo} className="text-gradient">
-              VIRUZVERSE
-            </Link>
-            
-            <nav style={styles.nav} className="nav-desktop" role="navigation" aria-label="Main navigation">
-              {navItems.map(item => {
-                if (item.label === 'About') {
-                  return (
-                    <div 
-                      key={item.path}
-                      style={{position: 'relative'}}
-                      onMouseEnter={() => setIsAboutDropdownOpen(true)}
-                      onMouseLeave={() => setIsAboutDropdownOpen(false)}
+            {/* Logo */}
+           <Link href="/" style={styles.logoContainer} className="text-gradient">
+  <span style={styles.logoText} className="logo-text">
+    VIRUZVERSE
+  </span>
+  <img
+    src="/logo.png"
+    alt="VIRUZVERSE Logo"
+    style={styles.logoImage}
+    className="logo-image"
+  />
+</Link>
+
+
+            {/* Nav */}
+            <div style={styles.rightSection}>
+              <nav style={styles.nav} className="nav-desktop" role="navigation">
+                {navItems.map(item => (
+                  <Link
+                    key={item.path}
+                    href={item.path}
+                    className={`nav-link-enhanced ${location === item.path ? 'active' : ''}`}
+                    style={{
+                      ...styles.navLink,
+                      ...(location === item.path ? styles.navLinkActive : {})
+                    }}
+                  >
+                    {item.label}
+                  </Link>
+                ))}
+
+                {/* About Dropdown */}
+                <div
+                  style={styles.dropdownContainer}
+                  onMouseEnter={() => setIsAboutDropdownOpen(true)}
+                  onMouseLeave={() => setIsAboutDropdownOpen(false)}
+                >
+                  <button
+                    style={{
+                      ...styles.dropdownButton,
+                      ...(aboutMenuItems.some(item => location === item.path)
+                        ? styles.dropdownButtonActive
+                        : {})
+                    }}
+                  >
+                    About
+                    <span
+                      style={{
+                        ...styles.chevron,
+                        ...(isAboutDropdownOpen ? styles.chevronRotated : {})
+                      }}
                     >
-                      <Link 
+                      ▼
+                    </span>
+                  </button>
+                  <div
+                    style={{
+                      ...styles.dropdownMenu,
+                      ...(isAboutDropdownOpen ? styles.dropdownMenuOpen : {})
+                    }}
+                  >
+                    {aboutMenuItems.map((item, index) => (
+                      <Link
+                        key={item.path}
                         href={item.path}
-                        className={`nav-link-enhanced ${location === item.path ? 'active' : ''}`}
                         style={{
-                          ...styles.navLink,
-                          ...(location === item.path ? styles.navLinkActive : {})
+                          ...styles.dropdownItem,
+                          ...(index === aboutMenuItems.length - 1
+                            ? styles.dropdownItemLast
+                            : {})
+                        }}
+                        onMouseEnter={(e) => {
+                          Object.assign(e.target.style, styles.dropdownItemHover);
+                        }}
+                        onMouseLeave={(e) => {
+                          e.target.style.background = 'transparent';
+                          e.target.style.color = '#fff';
                         }}
                       >
                         {item.label}
                       </Link>
-                      {isAboutDropdownOpen && (
-                        <div style={{position: 'absolute', top: '100%', left: '-50%', zIndex: 100}}>
-                           <Contact />
-                        </div>
-                      )}
-                    </div>
-                  );
-                } else {
-                  return (
-                    <Link 
-                      key={item.path} 
-                      href={item.path}
-                      className={`nav-link-enhanced ${location === item.path ? 'active' : ''}`}
-                      style={{
-                        ...styles.navLink,
-                        ...(location === item.path ? styles.navLinkActive : {})
-                      }}
-                    >
-                      {item.label}
-                    </Link>
-                  );
-                }
-              })}
-              
-              {/* About Dropdown */}
-              <div 
-                style={styles.dropdownContainer}
-                onMouseEnter={() => setIsAboutDropdownOpen(true)}
-                onMouseLeave={() => setIsAboutDropdownOpen(false)}
-              >
-                <button
-                  style={{
-                    ...styles.dropdownButton,
-                    ...(aboutMenuItems.some(item => location === item.path) ? styles.dropdownButtonActive : {})
-                  }}
-                  className="nav-link-enhanced"
-                >
-                  About
-                  <span 
-                    style={{
-                      ...styles.chevron,
-                      ...(isAboutDropdownOpen ? styles.chevronRotated : {})
-                    }}
-                  >
-                    ▼
-                  </span>
-                </button>
-                
-                <div 
-                  style={{
-                    ...styles.dropdownMenu,
-                    ...(isAboutDropdownOpen ? styles.dropdownMenuOpen : {})
-                  }}
-                >
-                  {aboutMenuItems.map((item, index) => (
-                    <Link
-                      key={item.path}
-                      href={item.path}
-                      style={{
-                        ...styles.dropdownItem,
-                        ...(index === aboutMenuItems.length - 1 ? styles.dropdownItemLast : {})
-                      }}
-                      onMouseEnter={(e) => {
-                        Object.assign(e.target.style, styles.dropdownItemHover);
-                      }}
-                      onMouseLeave={(e) => {
-                        e.target.style.background = 'transparent';
-                        e.target.style.color = 'var(--color-text-primary)';
-                      }}
-                    >
-                      {item.label}
-                    </Link>
-                  ))}
+                    ))}
+                  </div>
                 </div>
+              </nav>
+
+              {/* Mobile Menu Button */}
+              <div style={styles.headerActions}>
+                <button
+                  style={styles.mobileMenuBtn}
+                  className="mobile-menu-btn"
+                  onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                >
+                  {isMobileMenuOpen ? '✕' : '☰'}
+                </button>
               </div>
-            </nav>
-            
-            <div style={styles.headerActions}>
-              
-              <button 
-                style={styles.mobileMenuBtn}
-                className="mobile-menu-btn"
-                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                aria-label="Toggle mobile menu"
-              >
-                {isMobileMenuOpen ? '✕' : '☰'}
-              </button>
             </div>
           </div>
         </div>
 
-        {/* Mobile Navigation */}
-        <nav 
+        {/* Mobile Nav */}
+        <nav
           className="mobile-nav-menu"
           style={{
             ...styles.navMobile,
             ...(isMobileMenuOpen ? styles.navMobileOpen : {})
-          }} 
-          role="navigation" 
-          aria-label="Mobile navigation"
+          }}
         >
           {navItems.map(item => (
             <Link
@@ -341,10 +338,8 @@ export default function Header() {
               {item.label}
             </Link>
           ))}
-          
-          {/* About Section in Mobile */}
-          <div className="mobile-nav-section" style={{ marginTop: 'var(--spacing-md)', paddingTop: 'var(--spacing-md)', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
-            <div className="mobile-nav-link" style={{ ...styles.navLink, fontWeight: 600, color: 'var(--color-accent-3)', marginBottom: 'var(--spacing-sm)' }}>
+          <div style={{ marginTop: '16px', paddingTop: '16px', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+            <div style={{ ...styles.navLink, fontWeight: 600, color: '#a78bfa', marginBottom: '8px' }}>
               About
             </div>
             {aboutMenuItems.map(item => (
@@ -354,7 +349,7 @@ export default function Header() {
                 className="mobile-nav-link"
                 style={{
                   ...styles.navLink,
-                  paddingLeft: 'var(--spacing-md)',
+                  paddingLeft: '16px',
                   fontSize: '14px',
                   ...(location === item.path ? styles.navLinkActive : {})
                 }}
