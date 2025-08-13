@@ -96,20 +96,20 @@
   margin-bottom: 30px;
 }
 
-.info-item {
+.info-item, .info-item-static {
   display: flex;
   align-items: center;
   margin-bottom: 25px;
   transition: color 0.3s ease;
 }
 
-.info-item a {
+.info-item a, .info-item-static {
   color: inherit;
   text-decoration: none;
   display: contents;
 }
 
-.info-item:hover {
+.info-item:hover, .info-item-static:hover {
   color: #7b5cff;
 }
 
@@ -120,8 +120,13 @@
   transition: transform 0.3s ease;
 }
 
-.info-item:hover .info-icon {
+.info-item:hover .info-icon, .info-item-static:hover .info-icon {
   transform: scale(1.1);
+}
+
+.info-text {
+  display: flex;
+  flex-direction: column;
 }
 
 .info-text .label {

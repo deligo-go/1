@@ -4,13 +4,23 @@ import '../styles/Contact.css';
 
 const ContactInfoItem = ({ icon, label, value, href }) => (
   <div className="info-item">
-    <a href={href} aria-label={label}>
-      <div className="info-icon">{icon}</div>
-      <div className="info-text">
-        <span className="label">{label}</span>
-        <span className="value">{value}</span>
+    {href ? (
+      <a href={href} aria-label={label}>
+        <div className="info-icon">{icon}</div>
+        <div className="info-text">
+          <span className="label">{label}</span>
+          <span className="value">{value}</span>
+        </div>
+      </a>
+    ) : (
+      <div className="info-item-static">
+        <div className="info-icon">{icon}</div>
+        <div className="info-text">
+          <span className="label">{label}</span>
+          <span className="value">{value}</span>
+        </div>
       </div>
-    </a>
+    )}
   </div>
 );
 
@@ -24,20 +34,20 @@ const Contact = () => {
 
   useEffect(() => {
     const particleContainer = document.querySelector('.particle-container');
-    const particleCount = 50; // Optimized particle count
+    const particleCount = 50;
 
     for (let i = 0; i < particleCount; i++) {
       const particle = document.createElement('div');
       particle.classList.add('particle');
       
-      const size = Math.random() * 3 + 1; // 1px to 4px
+      const size = Math.random() * 3 + 1;
       particle.style.width = `${size}px`;
       particle.style.height = `${size}px`;
       
       particle.style.left = `${Math.random() * 100}%`;
       particle.style.top = `${Math.random() * 100}%`;
       
-      const animationDuration = Math.random() * 15 + 10; // 10s to 25s
+      const animationDuration = Math.random() * 15 + 10;
       const animationDelay = Math.random() * 25;
       particle.style.animation = `float ${animationDuration}s ${animationDelay}s linear infinite`;
       
@@ -53,12 +63,9 @@ const Contact = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setStatus('sending');
-    // Simulate API call
     setTimeout(() => {
-      // Simulate success
       setStatus('success');
       setFormData({ name: '', email: '', message: '' });
-      // Reset form status after a few seconds
       setTimeout(() => setStatus('idle'), 5000);
     }, 2000);
   };
@@ -66,26 +73,31 @@ const Contact = () => {
   return (
     <div className="contact-page">
       <div className="particle-container"></div>
-      <div className="contact-container">
-        <div className="contact-info-card">
+      <div className="contact-container" style={{ display: 'flex', flexWrap: 'wrap', gap: '2rem', maxWidth: '1200px', margin: '0 auto', padding: '2rem' }}>
+        <div className="contact-info-card" style={{ flex: '1 1 300px', minWidth: '300px' }}>
           <h2>Contact Information</h2>
           <p className="subtitle">Have a question or want to work together? Reach out to us.</p>
           <ContactInfoItem 
             icon={<Mail size={20} />} 
             label="Email Us" 
-            value="contact@viruzverse.com" 
-            href="mailto:contact@viruzverse.com"
+            value="contact@viruzverse.tech" 
+            href="mailto:contact@viruzverse.tech"
           />
           <ContactInfoItem 
             icon={<Phone size={20} />} 
             label="Call Us" 
-            value="+1 (234) 567-890" 
-            href="tel:+1234567890"
+            value="+91 96590 08000" 
+            href="tel:+919659008000"
           />
           <ContactInfoItem 
             icon={<MapPin size={20} />} 
-            label="Our Location" 
-            value="123 Innovation Drive, Tech City"
+            label="Headquarters" 
+            value="Dubai Internet City, Building 1, Sheikh Zayed Road, Dubai, UAE"
+          />
+          <ContactInfoItem 
+            icon={<MapPin size={20} />} 
+            label="Branch Office" 
+            value="SECE Campus, Coimbatore, Tamil Nadu, India"
           />
           <ContactInfoItem 
             icon={<Clock size={20} />} 
@@ -94,7 +106,7 @@ const Contact = () => {
           />
         </div>
 
-        <div className="contact-form-card">
+        <div className="contact-form-card" style={{ flex: '1 1 400px', minWidth: '300px' }}>
           <h2>Send a Message</h2>
           {status === 'success' ? (
             <div className="status-message status-success">
