@@ -1012,7 +1012,6 @@ export default function Solutions() {
             left: 0,
             width: '100%',
             height: '100%',
-            backgroundImage: `url(${backgroundImage})`,
             backgroundSize: 'cover',
             backgroundPosition: 'center 20%',
             backgroundRepeat: 'no-repeat',
