@@ -4,6 +4,7 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import Layout from "./components/Layout";
+import ScrollToTop from "./components/ScrollToTop";
 
 
 // Pages
@@ -21,8 +22,12 @@ import Careers from "./pages/Careers";
 import NotFound from "./pages/NotFound";
 
 function Router() {
+  // Use scroll to top hook for all route changes
+  ScrollToTop();
+
   return (
     <Layout>
+      <ScrollToTop />
       <Switch>
         <Route path="/" component={Home} />
         <Route path="/solutions" component={Solutions} />

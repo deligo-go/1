@@ -543,7 +543,7 @@ export default function Home() {
                   Join thousands of companies leveraging our cutting-edge solutions
                 </p>
                 <div style={{ display: 'flex', gap: 'var(--spacing-lg)', justifyContent: 'center', flexWrap: 'wrap' }}>
-                  <Link href="/about" className="btn-professional hover-rotate-scale">
+                  <Link href="/journey" className="btn-professional hover-rotate-scale">
                     Learn About Us →
                   </Link>
                 </div>
