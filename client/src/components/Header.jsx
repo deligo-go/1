@@ -189,6 +189,11 @@ export default function Header() {
       background: '#000000', // Ensure black background for dropdown section
       padding: '8px 0',
     },
+    dropdownRow: { // New style for row containers
+      display: 'flex',
+      gap: '8px',
+      width: '100%',
+    },
   };
 
   const mobileStyles = `
@@ -235,7 +240,18 @@ export default function Header() {
         box-shadow: none !important;
         padding: 0 16px !important;
       }
+      .dropdown-section {
+        padding: 16px 0 !important;
+        margin-top: 16px;
+        border-top: 1px solid rgba(255,255,255,0.1);
+      }
+      .dropdown-row {
+        display: flex;
+        gap: 8px;
+        width: 100%;
+      }
       .dropdown-item {
+        flex: 1 1 calc(50% - 4px); // Two items per row with gap
         padding: 8px 16px !important;
         color: #ffffff !important;
         font-size: 14px !important;
@@ -258,6 +274,11 @@ export default function Header() {
         transform: translateY(-3px) !important;
       }
       .container { padding: 0 8px; }
+      .dropdown-item {
+        flex: 1 1 calc(50% - 4px); // Maintain two items per row
+        padding: 6px 12px !important;
+        font-size: 13px !important;
+      }
     }
     
     @media (max-width: 480px) {
@@ -270,6 +291,11 @@ export default function Header() {
         transform: translateY(-3px) !important;
       }
       .mobile-menu-btn { padding: 8px !important; }
+      .dropdown-item {
+        flex: 1 1 calc(50% - 4px); // Maintain two items per row
+        padding: 6px 10px !important;
+        font-size: 12px !important;
+      }
     }
     
     @media (max-width: 400px) {
@@ -282,6 +308,11 @@ export default function Header() {
         transform: translateY(-2px) !important;
       }
       .container { padding: 0 6px; }
+      .dropdown-item {
+        flex: 1 1 calc(50% - 4px); // Maintain two items per row
+        padding: 6px 8px !important;
+        font-size: 12px !important;
+      }
     }
     
     @media (max-width: 360px) {
@@ -292,6 +323,11 @@ export default function Header() {
       .logo-image { 
         height: 26px !important; 
         transform: translateY(-2px) !important;
+      }
+      .dropdown-item {
+        flex: 1 1 calc(50% - 4px); // Maintain two items per row
+        padding: 5px 8px !important;
+        font-size: 11px !important;
       }
     }
     
@@ -439,25 +475,44 @@ export default function Header() {
               {item.label}
             </Link>
           ))}
-          <div style={{ ...styles.dropdownSection, marginTop: '16px', paddingTop: '16px', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+          <div className="dropdown-section" style={{ ...styles.dropdownSection, marginTop: '16px', paddingTop: '16px', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
             <div style={{ ...styles.navLink, fontWeight: 600, color: '#a78bfa', marginBottom: '8px' }}>
               About
             </div>
-            {aboutMenuItems.map(item => (
-              <Link
-                key={item.path}
-                href={item.path}
-                style={{
-                  ...styles.navLink,
-                  ...(location === item.path ? styles.navLinkActive : {}),
-                  paddingLeft: '16px',
-                }}
-                className={`dropdown-item ${location === item.path ? 'active' : ''}`}
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                {item.label}
-              </Link>
-            ))}
+            <div className="dropdown-row" style={styles.dropdownRow}>
+              {aboutMenuItems.slice(0, 2).map(item => (
+                <Link
+                  key={item.path}
+                  href={item.path}
+                  style={{
+                    ...styles.navLink,
+                    ...(location === item.path ? styles.navLinkActive : {}),
+                    paddingLeft: '16px',
+                  }}
+                  className={`dropdown-item ${location === item.path ? 'active' : ''}`}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  {item.label}
+                </Link>
+              ))}
+            </div>
+            <div className="dropdown-row" style={styles.dropdownRow}>
+              {aboutMenuItems.slice(2).map(item => (
+                <Link
+                  key={item.path}
+                  href={item.path}
+                  style={{
+                    ...styles.navLink,
+                    ...(location === item.path ? styles.navLinkActive : {}),
+                    paddingLeft: '16px',
+                  }}
+                  className={`dropdown-item ${location === item.path ? 'active' : ''}`}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  {item.label}
+                </Link>
+              ))}
+            </div>
           </div>
         </nav>
       </header>
