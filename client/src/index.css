@@ -298,6 +298,22 @@ p {
   color: #1a1a1a;
 }
 
+/* Skip to content for accessibility */
+.skip-to-content {
+  position: absolute;
+  top: -40px;
+  left: 6px;
+  background: var(--gradient-primary);
+  color: white;
+  padding: 8px;
+  text-decoration: none;
+  border-radius: var(--radius-sm);
+  z-index: 100;
+}
+
+.skip-to-content:focus {
+  top: 6px;
+}
 
 /* Global utility classes */
 .container {
@@ -1170,14 +1186,14 @@ p {
 }
 
 /* Focus styles for accessibility */
-button:focus,
+/* button:focus,
 a:focus,
 input:focus,
 textarea:focus,
 select:focus {
   outline: 2px solid var(--color-accent-2);
   outline-offset: 2px;
-}
+} */
 
 /* Page transitions */
 .page-enter {
