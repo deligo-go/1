@@ -108,24 +108,25 @@ export default function Home() {
       color: 'var(--color-text)',
     },
     capabilitiesRow: {
-      display: 'flex',
-      justifyContent: 'space-between',
-      flexWrap: 'nowrap',
-      gap: 'var(--spacing-lg)',
+      display: 'grid',
+      gridTemplateColumns: 'repeat(4, 1fr)',
+      gap: '24px',
       marginTop: 'var(--spacing-2xl)',
     },
     capabilityCard: {
-      flex: '1',
-      minWidth: '250px',
-      padding: 'var(--spacing-xl)',
+      minWidth: '280px',
+      padding: '32px 24px',
       textAlign: 'center',
       borderRadius: 'var(--radius-lg)',
-      background: 'var(--color-surface-light)',
-      boxShadow: 'var(--shadow-md)',
-      border: '1px solid rgba(255,255,255,0.1)',
+      background: 'rgba(255, 255, 255, 0.08)',
+      boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)',
+      border: '1px solid rgba(255,255,255,0.12)',
       transition: 'all 0.3s ease',
       cursor: 'pointer',
-      backdropFilter: 'blur(10px)',
+      backdropFilter: 'blur(12px)',
+      display: 'flex',
+      flexDirection: 'column',
+      height: '100%',
     },
     capabilityCardHover: {
       transform: 'translateY(-8px)',
@@ -157,9 +158,11 @@ export default function Home() {
     },
     capabilityFeatureItem: {
       marginBottom: 'var(--spacing-sm)',
-      fontSize: '14px',
+      fontSize: '17px',
       opacity: 0.7,
       color: 'var(--color-text)',
+      position: 'relative',
+      paddingLeft: '20px',
     },
     ctaSection: {
       padding: 'var(--spacing-3xl) 0',
@@ -271,6 +274,16 @@ export default function Home() {
         .shape:nth-child(2) { width: 70px; height: 70px; top: 65%; right: 10%; animation-delay: 3s; }
         .shape:nth-child(3) { width: 50px; height: 50px; bottom: 20%; left: 60%; animation-delay: 6s; }
 
+        /* Bullet point styles for capability features */
+        .capability-feature-item::before {
+          content: '•';
+          color: #b191f5ff;
+          font-weight: bold;
+          position: absolute;
+          left: 0;
+          font-size: 20px;
+        }
+
         /* Animations */
         @keyframes fadeInUp {
           from { opacity: 0; transform: translateY(40px); }
@@ -321,27 +334,18 @@ export default function Home() {
         /* Responsive styles for capabilities section */
         @media (max-width: 1200px) {
           .capabilities-row {
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: var(--spacing-md);
-          }
-          .capability-card {
-            min-width: 280px;
-            max-width: 300px;
-            flex: 0 1 calc(50% - var(--spacing-md));
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
           }
         }
         @media (max-width: 768px) {
           .capabilities-row {
-            flex-direction: column;
-            align-items: center;
-            gap: var(--spacing-lg);
+            grid-template-columns: 1fr;
+            gap: 24px;
           }
           .capability-card {
             min-width: auto;
-            width: 100%;
-            max-width: 350px;
-            flex: none;
+            max-width: 100%;
           }
         }
       `}</style>
@@ -389,139 +393,94 @@ export default function Home() {
               <p style={styles.sectionSubtitle}>Cutting-edge technologies that drive innovation across industries</p>
             </div>
           
-            <div style={styles.capabilitiesRow} className="capabilities-row">
-              <div 
-                style={{
-                  ...styles.capabilityCard,
-                  ...(hoveredCard === 0 ? styles.capabilityCardHover : {})
-                }} 
-                className="capability-card professional-card"
-                onMouseEnter={() => handleCardHover(0, true)}
-                onMouseLeave={() => handleCardHover(0, false)}
-              >
-                <h3 style={styles.capabilityTitle}>Immersive Training Simulations</h3>
-                <p style={styles.capabilityDescription}>Create realistic training environments that improve learning retention and reduce costs.</p>
-                <ul style={styles.capabilityFeatures}>
-                  <li style={styles.capabilityFeatureItem}>Realistic Physics</li>
-                  <li style={styles.capabilityFeatureItem}>Multi-user Support</li>
-                  <li style={styles.capabilityFeatureItem}>Progress Tracking</li>
-                  <li style={styles.capabilityFeatureItem}>Custom Scenarios</li>
-                </ul>
-              </div>
+          <div style={styles.capabilitiesRow} className="capabilities-row">
+                         <div 
+               style={{
+                 ...styles.capabilityCard,
+                 ...(hoveredCard === 0 ? styles.capabilityCardHover : {})
+               }} 
+               className="capability-card professional-card"
+               onMouseEnter={() => handleCardHover(0, true)}
+               onMouseLeave={() => handleCardHover(0, false)}
+             >
+               <h3 style={styles.capabilityTitle}>Interactive Simulations</h3>
+               <p style={styles.capabilityDescription}>Create realistic training environments that improve learning retention and reduce costs.</p>
+               <ul style={styles.capabilityFeatures}>
+                 <li style={styles.capabilityFeatureItem} className="capability-feature-item">Realistic Physics</li>
+                 <li style={styles.capabilityFeatureItem} className="capability-feature-item">Multi-user Support</li>
+                 <li style={styles.capabilityFeatureItem} className="capability-feature-item">Progress Tracking</li>
+                 <li style={styles.capabilityFeatureItem} className="capability-feature-item">Custom Scenarios</li>
+               </ul>
+             </div>
             
-              <div 
-                style={{
-                  ...styles.capabilityCard,
-                  ...(hoveredCard === 1 ? styles.capabilityCardHover : {})
-                }} 
-                className="capability-card"
-                onMouseEnter={() => handleCardHover(1, true)}
-                onMouseLeave={() => handleCardHover(1, false)}
-              >
-                <h3 style={styles.capabilityTitle}>3D Architectural Visualization</h3>
-                <p style={styles.capabilityDescription}>Transform blueprints into immersive 3D experiences for better client presentations.</p>
-                <ul style={styles.capabilityFeatures}>
-                  <li style={styles.capabilityFeatureItem}>Real-time Rendering</li>
-                  <li style={styles.capabilityFeatureItem}>CAD Integration</li>
-                  <li style={styles.capabilityFeatureItem}>Material Libraries</li>
-                  <li style={styles.capabilityFeatureItem}>Lighting Systems</li>
-                </ul>
-              </div>
+                         <div 
+               style={{
+                 ...styles.capabilityCard,
+                 ...(hoveredCard === 1 ? styles.capabilityCardHover : {})
+               }} 
+               className="capability-card"
+               onMouseEnter={() => handleCardHover(1, true)}
+               onMouseLeave={() => handleCardHover(1, false)}
+             >
+               <h3 style={styles.capabilityTitle}>3D Architectural Visualization</h3>
+               <p style={styles.capabilityDescription}>Transform blueprints into immersive 3D experiences for better client presentations.</p>
+               <ul style={styles.capabilityFeatures}>
+                 <li style={styles.capabilityFeatureItem} className="capability-feature-item">Real-time Rendering</li>
+                 <li style={styles.capabilityFeatureItem} className="capability-feature-item">CAD Integration</li>
+                 <li style={styles.capabilityFeatureItem} className="capability-feature-item">Material Libraries</li>
+                 <li style={styles.capabilityFeatureItem} className="capability-feature-item">Lighting Systems</li>
+               </ul>
+             </div>
             
-              <div 
-                style={{
-                  ...styles.capabilityCard,
-                  ...(hoveredCard === 2 ? styles.capabilityCardHover : {})
-                }} 
-                className="capability-card"
-                onMouseEnter={() => handleCardHover(2, true)}
-                onMouseLeave={() => handleCardHover(2, false)}
-              >
-                <h3 style={styles.capabilityTitle}>Virtual Collaboration</h3>
-                <p style={styles.capabilityDescription}>Enable remote teams to collaborate in shared virtual spaces with natural interactions.</p>
-                <ul style={styles.capabilityFeatures}>
-                  <li style={styles.capabilityFeatureItem}>Spatial Audio</li>
-                  <li style={styles.capabilityFeatureItem}>Gesture Recognition</li>
-                  <li style={styles.capabilityFeatureItem}>Screen Sharing</li>
-                  <li style={styles.capabilityFeatureItem}>Cross-platform</li>
-                </ul>
-              </div>
+                         <div 
+               style={{
+                 ...styles.capabilityCard,
+                 ...(hoveredCard === 2 ? styles.capabilityCardHover : {})
+               }} 
+               className="capability-card"
+               onMouseEnter={() => handleCardHover(2, true)}
+               onMouseLeave={() => handleCardHover(2, false)}
+             >
+               <h3 style={styles.capabilityTitle}>Virtual Collaboration</h3>
+               <p style={styles.capabilityDescription}>Enable remote teams to collaborate in shared virtual spaces with natural interactions.</p>
+               <ul style={styles.capabilityFeatures}>
+                 <li style={styles.capabilityFeatureItem} className="capability-feature-item">Spatial Audio</li>
+                 <li style={styles.capabilityFeatureItem} className="capability-feature-item">Gesture Recognition</li>
+                 <li style={styles.capabilityFeatureItem} className="capability-feature-item">Screen Sharing</li>
+                 <li style={styles.capabilityFeatureItem} className="capability-feature-item">Cross-platform</li>
+               </ul>
+             </div>
             
-              <div 
-                style={{
-                  ...styles.capabilityCard,
-                  ...(hoveredCard === 3 ? styles.capabilityCardHover : {})
-                }} 
-                className="capability-card"
-                onMouseEnter={() => handleCardHover(3, true)}
-                onMouseLeave={() => handleCardHover(3, false)}
-              >
-                <h3 style={styles.capabilityTitle}>Digital Development</h3>
-                <p style={styles.capabilityDescription}>Custom digital application development for various industries and use cases.</p>
-                <ul style={styles.capabilityFeatures}>
-                  <li style={styles.capabilityFeatureItem}>Unity/Unreal</li>
-                  <li style={styles.capabilityFeatureItem}>WebXR Support</li>
-                  <li style={styles.capabilityFeatureItem}>Mobile Apps</li>
-                  <li style={styles.capabilityFeatureItem}>Cross-platform</li>
-                </ul>
-              </div>
-            </div>
+                         <div 
+               style={{
+                 ...styles.capabilityCard,
+                 ...(hoveredCard === 3 ? styles.capabilityCardHover : {})
+               }} 
+               className="capability-card"
+               onMouseEnter={() => handleCardHover(3, true)}
+               onMouseLeave={() => handleCardHover(3, false)}
+             >
+               <h3 style={styles.capabilityTitle}>Digital Development</h3>
+               <p style={styles.capabilityDescription}>Custom digital application development for various industries and use cases.</p>
+               <ul style={styles.capabilityFeatures}>
+                 <li style={styles.capabilityFeatureItem} className="capability-feature-item">Unity/Unreal</li>
+                 <li style={styles.capabilityFeatureItem} className="capability-feature-item">WebXR Support</li>
+                 <li style={styles.capabilityFeatureItem} className="capability-feature-item">Mobile Apps</li>
+                 <li style={styles.capabilityFeatureItem} className="capability-feature-item">Cross-platform</li>
+               </ul>
+             </div>
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* Solutions Section */}
+        {/* Solutions Section
         <section className="features-section" style={{padding: 'var(--spacing-3xl) 0', position: 'relative'}}>
           <div style={{position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, zIndex: 1}}></div>
           <div className="container" style={styles.sectionContent}>
-            <h2 style={styles.sectionTitle} className="text-gradient pulse-glow slide-in-left professional-heading">
-              Solutions
-            </h2>
+            
             <p style={styles.sectionSubtitle} className="slide-in-right professional-subtext">
               Comprehensive solutions tailored to your industry needs
             </p>
-
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-              gap: 'var(--spacing-xl)',
-              marginTop: 'var(--spacing-2xl)'
-            }}>
-              <div className="professional-card hover-lift" style={{ 
-                padding: 'var(--spacing-xl)', 
-                textAlign: 'center',
-                borderRadius: 'var(--radius-lg)',
-              }}>
-                <div style={{ fontSize: '36px', marginBottom: 'var(--spacing-md)' }}>🔒</div>
-                <h3 className="professional-heading" style={{ fontSize: '20px', fontWeight: 600 }}>Cybersecurity</h3>
-              </div>
-
-              <div className="professional-card hover-lift" style={{ 
-                padding: 'var(--spacing-xl)', 
-                textAlign: 'center',
-                borderRadius: 'var(--radius-lg)',
-              }}>
-                <div style={{ fontSize: '36px', marginBottom: 'var(--spacing-md)' }}>🥽</div>
-                <h3 className="professional-heading" style={{ fontSize: '20px', fontWeight: 600 }}>VR & 3D</h3>
-              </div>
-
-              <div className="professional-card hover-lift" style={{ 
-                padding: 'var(--spacing-xl)', 
-                textAlign: 'center',
-                borderRadius: 'var(--radius-lg)',
-              }}>
-                <div style={{ fontSize: '36px', marginBottom: 'var(--spacing-md)' }}>📱</div>
-                <h3 className="professional-heading" style={{ fontSize: '20px', fontWeight: 600 }}>Mobile Apps</h3>
-              </div>
-
-              <div className="professional-card hover-lift" style={{ 
-                padding: 'var(--spacing-xl)', 
-                textAlign: 'center',
-                borderRadius: 'var(--radius-lg)',
-              }}>
-                <div style={{ fontSize: '36px', marginBottom: 'var(--spacing-md)' }}>🏢</div>
-                <h3 className="professional-heading" style={{ fontSize: '20px', fontWeight: 600 }}>Enterprise Tools</h3>
-              </div>
-            </div>
 
             <div style={{ textAlign: 'center', marginTop: 'var(--spacing-xl)' }}>
               <Link href="/solutions" className="btn-professional bounce-hover">
@@ -529,22 +488,22 @@ export default function Home() {
               </Link>
             </div>
           </div>
-        </section>
+        </section> */}
 
         {/* CTA Section */}
         <section>
           <div className="container">
             <div style={styles.ctaSection}>
               <div style={{ position: 'relative', zIndex: 2 }}>
-                <h2 style={{ fontSize: '36px', marginBottom: 'var(--spacing-md)' }} className="text-gradient floating-element professional-heading">
+                <h2 style={{ fontSize: '36px', marginBottom: 'var(--spacing-md)' }} className="text-gradient professional-heading">
                   Ready to Transform Your Business?
                 </h2>
                 <p style={{ fontSize: '18px', opacity: 0.8, marginBottom: 'var(--spacing-xl)' }} className="fade-in-up professional-subtext">
                   Join thousands of companies leveraging our cutting-edge solutions
                 </p>
-                <div style={{ display: 'flex', gap: 'var(--spacing-lg)', justifyContent: 'center', flexWrap: 'wrap' }}>
-                  <Link href="/journey" className="btn-professional hover-rotate-scale">
-                    Learn About Us →
+                <div style={{ textAlign: 'center', marginTop: 'var(--spacing-xl)' }}>
+                  <Link href="/solutions" className="btn-professional bounce-hover">
+                    Explore All Solutions →
                   </Link>
                 </div>
               </div>
