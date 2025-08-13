@@ -129,7 +129,6 @@ export default function Careers() {
       boxShadow: '0 20px 40px rgba(0,0,0,0.3)',
       transition: 'all 0.3s ease',
       position: 'relative',
-      cursor: 'pointer',
       maxHeight: isMobile ? '250px' : '400px',
       objectFit: 'cover',
     },
@@ -363,7 +362,6 @@ export default function Careers() {
                 }}
                 onMouseEnter={() => !isMobile && setHoveredCard(`image-${index}`)}
                 onMouseLeave={() => !isMobile && setHoveredCard(null)}
-                onClick={() => window.open(role.image, '_blank')}
               />
               <div style={styles.roleContent}>
                 <h2 style={styles.roleTitle}>{role.title}</h2>
