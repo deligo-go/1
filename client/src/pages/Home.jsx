@@ -473,22 +473,7 @@ export default function Home() {
         </div>
       </section>
 
-        {/* Solutions Section
-        <section className="features-section" style={{padding: 'var(--spacing-3xl) 0', position: 'relative'}}>
-          <div style={{position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, zIndex: 1}}></div>
-          <div className="container" style={styles.sectionContent}>
-            
-            <p style={styles.sectionSubtitle} className="slide-in-right professional-subtext">
-              Comprehensive solutions tailored to your industry needs
-            </p>
-
-            <div style={{ textAlign: 'center', marginTop: 'var(--spacing-xl)' }}>
-              <Link href="/solutions" className="btn-professional bounce-hover">
-                Explore All Solutions →
-              </Link>
-            </div>
-          </div>
-        </section> */}
+        
 
         {/* CTA Section */}
         <section>
@@ -501,7 +486,7 @@ export default function Home() {
                 <p style={{ fontSize: '18px', opacity: 0.8, marginBottom: 'var(--spacing-xl)' }} className="fade-in-up professional-subtext">
                   Join thousands of companies leveraging our cutting-edge solutions
                 </p>
-                <div style={{ textAlign: 'center', marginTop: 'var(--spacing-xl)' }}>
+                <div style={{ display: 'flex', gap: 'var(--spacing-lg)', justifyContent: 'center', flexWrap: 'wrap' }}>
                   <Link href="/solutions" className="btn-professional bounce-hover">
                     Explore All Solutions →
                   </Link>

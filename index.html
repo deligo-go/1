@@ -38,10 +38,35 @@ body {
     background: radial-gradient(circle at 50% 50%, rgba(110, 75, 195, 0.15) 0%, transparent 70%);
     overflow: hidden;
 }
-.hero-content {
+.hero-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: center;
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 20px;
     z-index: 2;
+}
+.hero-content {
     text-align: left;
-    max-width: 700px;
+}
+.hero-vr-container {
+    position: relative;
+    height: 500px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#vr-canvas {
+    width: 100%;
+    height: 100%;
+    max-width: 500px;
+    max-height: 500px;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(110, 75, 195, 0.3);
+    background: rgba(110, 75, 195, 0.1);
 }
 .hero h1 {
     font-size: clamp(2.5rem, 5vw, 3.5rem);
@@ -168,17 +193,36 @@ body {
 /* Responsive tweaks */
 @media (max-width: 992px) {
     .hero p { font-size: 1.1rem; }
+    .hero-container {
+        gap: 30px;
+    }
+    .hero-vr-container {
+        height: 400px;
+    }
 }
 @media (max-width: 768px) {
-    .hero h1 { text-align: center; }
-    .hero p { text-align: center; }
-    .cta-button { display: block; margin: 0 auto; }
+    .hero-container {
+        grid-template-columns: 1fr;
+        gap: 40px;
+        text-align: center;
+    }
+    .hero-content {
+        text-align: center;
+    }
+    .hero-vr-container {
+        height: 350px;
+        display: none; /* Hide VR box on mobile as requested */
+    }
+    .cta-button { display: inline-block; }
 }
 @media (max-width: 480px) {
     .hero p { font-size: 1rem; }
     .cta-button { padding: 12px 25px; font-size: 0.9rem; }
     .section-content h2 { font-size: 2rem; }
     .section-content p { font-size: 1rem; }
+    .hero-container {
+        padding: 0 15px;
+    }
 }
 </style>
 </head>
@@ -193,12 +237,15 @@ body {
         <div class="shape"></div>
     </div>
 
-    <div class="container">
+    <div class="hero-container">
         <div class="hero-content">
             <h1>Innovate. Create.</h1>
             <h1>Elevate.</h1>
             <p>Transforming ideas into digital realities with cutting-edge technology and unparalleled expertise. Welcome to the future of innovation.</p>
             <a href="#contact" class="cta-button">Connect Us</a>
+        </div>
+        <div class="hero-vr-container">
+            <canvas id="vr-canvas"></canvas>
         </div>
     </div>
 </section>
@@ -310,6 +357,186 @@ document.addEventListener('DOMContentLoaded', function() {
         contactParticles.updateParticleColor(0x96ceb4);
     }, 5000);
     */
+});
+
+// VR Box Three.js Implementation
+class VRBox {
+    constructor(canvasId) {
+        this.canvas = document.getElementById(canvasId);
+        this.scene = null;
+        this.camera = null;
+        this.renderer = null;
+        this.cube = null;
+        this.mouse = { x: 0, y: 0 };
+        this.targetRotation = { x: 0, y: 0 };
+        this.currentRotation = { x: 0, y: 0 };
+        this.isDesktop = window.innerWidth > 768;
+        
+        if (this.canvas && this.isDesktop) {
+            this.init();
+            this.setupEventListeners();
+            this.animate();
+        }
+    }
+
+    init() {
+        console.log('Initializing VR Box...');
+        console.log('Canvas dimensions:', this.canvas.clientWidth, 'x', this.canvas.clientHeight);
+        
+        // Create scene
+        this.scene = new THREE.Scene();
+
+        // Create camera
+        const aspect = this.canvas.clientWidth / this.canvas.clientHeight;
+        this.camera = new THREE.PerspectiveCamera(75, aspect, 0.1, 1000);
+        this.camera.position.z = 3;
+
+        // Create renderer
+        this.renderer = new THREE.WebGLRenderer({ 
+            canvas: this.canvas, 
+            alpha: true, 
+            antialias: true 
+        });
+        this.renderer.setSize(this.canvas.clientWidth, this.canvas.clientHeight);
+        this.renderer.setClearColor(0x000000, 0);
+
+        // Create VR Box geometry
+        const geometry = new THREE.BoxGeometry(1.5, 1.5, 1.5);
+        
+        // Create materials for each face
+        const materials = [
+            new THREE.MeshBasicMaterial({ color: 0x6e4bc3, transparent: true, opacity: 0.8 }),
+            new THREE.MeshBasicMaterial({ color: 0xa34b6e, transparent: true, opacity: 0.8 }),
+            new THREE.MeshBasicMaterial({ color: 0x4a90e2, transparent: true, opacity: 0.8 }),
+            new THREE.MeshBasicMaterial({ color: 0x00bcd4, transparent: true, opacity: 0.8 }),
+            new THREE.MeshBasicMaterial({ color: 0x6e4bc3, transparent: true, opacity: 0.8 }),
+            new THREE.MeshBasicMaterial({ color: 0xa34b6e, transparent: true, opacity: 0.8 })
+        ];
+
+        // Create cube
+        this.cube = new THREE.Mesh(geometry, materials);
+        this.scene.add(this.cube);
+
+        // Add wireframe
+        const wireframeGeometry = new THREE.EdgesGeometry(geometry);
+        const wireframeMaterial = new THREE.LineBasicMaterial({ 
+            color: 0xffffff, 
+            transparent: true, 
+            opacity: 0.3 
+        });
+        const wireframe = new THREE.LineSegments(wireframeGeometry, wireframeMaterial);
+        this.cube.add(wireframe);
+
+        // Add ambient lighting effect
+        const ambientLight = new THREE.AmbientLight(0x404040, 0.6);
+        this.scene.add(ambientLight);
+
+        // Add point light
+        const pointLight = new THREE.PointLight(0x6e4bc3, 0.8, 10);
+        pointLight.position.set(2, 2, 2);
+        this.scene.add(pointLight);
+    }
+
+    setupEventListeners() {
+        if (!this.isDesktop) return;
+
+        // Mouse move event for desktop only
+        const container = this.canvas.parentElement;
+        container.addEventListener('mousemove', (event) => {
+            const rect = container.getBoundingClientRect();
+            this.mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+            this.mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+            
+            this.targetRotation.x = this.mouse.y * 0.5;
+            this.targetRotation.y = this.mouse.x * 0.5;
+        });
+
+        // Reset rotation when mouse leaves
+        container.addEventListener('mouseleave', () => {
+            this.targetRotation.x = 0;
+            this.targetRotation.y = 0;
+        });
+
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            this.handleResize();
+        });
+    }
+
+    handleResize() {
+        if (!this.camera || !this.renderer || !this.canvas) return;
+        
+        this.isDesktop = window.innerWidth > 768;
+        
+        if (!this.isDesktop) {
+            return;
+        }
+
+        const aspect = this.canvas.clientWidth / this.canvas.clientHeight;
+        this.camera.aspect = aspect;
+        this.camera.updateProjectionMatrix();
+        this.renderer.setSize(this.canvas.clientWidth, this.canvas.clientHeight);
+    }
+
+    animate() {
+        if (!this.isDesktop || !this.cube) {
+            requestAnimationFrame(() => this.animate());
+            return;
+        }
+
+        requestAnimationFrame(() => this.animate());
+
+        // Smooth rotation interpolation
+        this.currentRotation.x += (this.targetRotation.x - this.currentRotation.x) * 0.05;
+        this.currentRotation.y += (this.targetRotation.y - this.currentRotation.y) * 0.05;
+
+        // Apply rotation
+        this.cube.rotation.x = this.currentRotation.x;
+        this.cube.rotation.y = this.currentRotation.y;
+        
+        // Add subtle auto-rotation when not interacting
+        if (Math.abs(this.targetRotation.x) < 0.01 && Math.abs(this.targetRotation.y) < 0.01) {
+            this.cube.rotation.y += 0.005;
+        }
+
+        // Render scene
+        if (this.renderer && this.scene && this.camera) {
+            this.renderer.render(this.scene, this.camera);
+        }
+    }
+
+    destroy() {
+        if (this.cube) {
+            if (this.cube.geometry) this.cube.geometry.dispose();
+            if (this.cube.material) {
+                if (Array.isArray(this.cube.material)) {
+                    this.cube.material.forEach(material => material.dispose());
+                } else {
+                    this.cube.material.dispose();
+                }
+            }
+            this.scene.remove(this.cube);
+        }
+        if (this.renderer) {
+            this.renderer.dispose();
+        }
+    }
+}
+
+// Initialize VR Box
+let vrBox = null;
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM loaded, initializing VR Box...');
+    const canvas = document.getElementById('vr-canvas');
+    console.log('Canvas found:', canvas);
+    console.log('Window width:', window.innerWidth);
+    console.log('Is desktop:', window.innerWidth > 768);
+    
+    // Initialize VR Box after a short delay to ensure canvas is ready
+    setTimeout(() => {
+        vrBox = new VRBox('vr-canvas');
+        console.log('VR Box initialized:', vrBox);
+    }, 100);
 });
 
 // Smooth scrolling for navigation

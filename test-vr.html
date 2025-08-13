@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VR Box Test</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<style>
+body {
+    margin: 0;
+    background: #0a0a0a;
+    color: white;
+    font-family: Arial, sans-serif;
+}
+.test-container {
+    display: flex;
+    height: 100vh;
+    align-items: center;
+    justify-content: space-around;
+    padding: 20px;
+}
+.content {
+    flex: 1;
+    padding: 20px;
+}
+.vr-container {
+    flex: 1;
+    height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#test-canvas {
+    width: 400px;
+    height: 400px;
+    border: 2px solid #6e4bc3;
+    border-radius: 20px;
+}
+</style>
+</head>
+<body>
+
+<div class="test-container">
+    <div class="content">
+        <h1>VR Box Test</h1>
+        <p>Move your mouse over the box on the right to see it rotate.</p>
+        <p>If you see a rotating cube, the VR box is working correctly.</p>
+    </div>
+    <div class="vr-container">
+        <canvas id="test-canvas"></canvas>
+    </div>
+</div>
+
+<script>
+class VRBoxTest {
+    constructor(canvasId) {
+        this.canvas = document.getElementById(canvasId);
+        this.scene = null;
+        this.camera = null;
+        this.renderer = null;
+        this.cube = null;
+        this.mouse = { x: 0, y: 0 };
+        this.targetRotation = { x: 0, y: 0 };
+        this.currentRotation = { x: 0, y: 0 };
+        
+        if (this.canvas) {
+            this.init();
+            this.setupEventListeners();
+            this.animate();
+        }
+    }
+
+    init() {
+        // Create scene
+        this.scene = new THREE.Scene();
+
+        // Create camera
+        const aspect = this.canvas.clientWidth / this.canvas.clientHeight;
+        this.camera = new THREE.PerspectiveCamera(75, aspect, 0.1, 1000);
+        this.camera.position.z = 3;
+
+        // Create renderer
+        this.renderer = new THREE.WebGLRenderer({ 
+            canvas: this.canvas, 
+            alpha: true, 
+            antialias: true 
+        });
+        this.renderer.setSize(this.canvas.clientWidth, this.canvas.clientHeight);
+        this.renderer.setClearColor(0x000000, 0);
+
+        // Create VR Box geometry
+        const geometry = new THREE.BoxGeometry(1.5, 1.5, 1.5);
+        
+        // Create materials for each face
+        const materials = [
+            new THREE.MeshBasicMaterial({ color: 0x6e4bc3, transparent: true, opacity: 0.8 }),
+            new THREE.MeshBasicMaterial({ color: 0xa34b6e, transparent: true, opacity: 0.8 }),
+            new THREE.MeshBasicMaterial({ color: 0x4a90e2, transparent: true, opacity: 0.8 }),
+            new THREE.MeshBasicMaterial({ color: 0x00bcd4, transparent: true, opacity: 0.8 }),
+            new THREE.MeshBasicMaterial({ color: 0x6e4bc3, transparent: true, opacity: 0.8 }),
+            new THREE.MeshBasicMaterial({ color: 0xa34b6e, transparent: true, opacity: 0.8 })
+        ];
+
+        // Create cube
+        this.cube = new THREE.Mesh(geometry, materials);
+        this.scene.add(this.cube);
+
+        // Add wireframe
+        const wireframeGeometry = new THREE.EdgesGeometry(geometry);
+        const wireframeMaterial = new THREE.LineBasicMaterial({ 
+            color: 0xffffff, 
+            transparent: true, 
+            opacity: 0.3 
+        });
+        const wireframe = new THREE.LineSegments(wireframeGeometry, wireframeMaterial);
+        this.cube.add(wireframe);
+
+        console.log('VR Box initialized successfully!');
+    }
+
+    setupEventListeners() {
+        // Mouse move event
+        const container = this.canvas.parentElement;
+        container.addEventListener('mousemove', (event) => {
+            const rect = container.getBoundingClientRect();
+            this.mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+            this.mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+            
+            this.targetRotation.x = this.mouse.y * 0.5;
+            this.targetRotation.y = this.mouse.x * 0.5;
+        });
+
+        // Reset rotation when mouse leaves
+        container.addEventListener('mouseleave', () => {
+            this.targetRotation.x = 0;
+            this.targetRotation.y = 0;
+        });
+    }
+
+    animate() {
+        requestAnimationFrame(() => this.animate());
+
+        if (this.cube) {
+            // Smooth rotation interpolation
+            this.currentRotation.x += (this.targetRotation.x - this.currentRotation.x) * 0.05;
+            this.currentRotation.y += (this.targetRotation.y - this.currentRotation.y) * 0.05;
+
+            // Apply rotation
+            this.cube.rotation.x = this.currentRotation.x;
+            this.cube.rotation.y = this.currentRotation.y;
+            
+            // Add subtle auto-rotation when not interacting
+            if (Math.abs(this.targetRotation.x) < 0.01 && Math.abs(this.targetRotation.y) < 0.01) {
+                this.cube.rotation.y += 0.005;
+            }
+        }
+
+        // Render scene
+        if (this.renderer && this.scene && this.camera) {
+            this.renderer.render(this.scene, this.camera);
+        }
+    }
+}
+
+// Initialize test
+document.addEventListener('DOMContentLoaded', function() {
+    const vrBoxTest = new VRBoxTest('test-canvas');
+});
+</script>
+
+</body>
+</html>
