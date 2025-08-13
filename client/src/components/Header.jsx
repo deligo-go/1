@@ -72,7 +72,7 @@ export default function Header() {
     navMobile: {
       display: 'none',
       position: 'fixed',
-      top: '80px',
+      top: '80px', // Start below header to keep logo and text visible
       left: 0,
       right: 0,
       bottom: 0,
@@ -185,6 +185,10 @@ export default function Header() {
     chevronRotated: {
       transform: 'rotate(180deg)',
     },
+    dropdownSection: {
+      background: '#000000', // Ensure black background for dropdown section
+      padding: '8px 0',
+    },
   };
 
   const mobileStyles = `
@@ -206,7 +210,7 @@ export default function Header() {
       }
       .logo-image { 
         height: 36px !important; // Smaller logo for mobile
-        transform: translateY(-4px) !important; // Move upward in mobile
+        transform: translateY(-4px) !important; // Move upward invisual
       }
       .logo-container {
         justify-content: flex-start !important; // Left-align logo
@@ -217,7 +221,30 @@ export default function Header() {
       .mobile-nav-menu {
         padding: 24px !important;
         overflow-y: auto;
-        height:3px calc(100vh - 80px);
+        height: calc(100vh - 80px) !important; // Full height below header
+        width: 100vw !important; // Full viewport width
+        background: #000000 !important; // Full black background
+      }
+      .dropdown-menu {
+        position: static !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        transform: none !important;
+        background: #000000 !important; // Match mobile-nav-menu background
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 16px !important;
+      }
+      .dropdown-item {
+        padding: 8px 16px !important;
+        color: #ffffff !important;
+        font-size: 14px !important;
+        font-weight: 500 !important;
+        border-bottom: none !important;
+        background: #000000 !important; // Ensure black background for items
+      }
+      .dropdown-item.active {
+        color: #a78bfa !important;
       }
     }
     
@@ -286,26 +313,11 @@ export default function Header() {
       }
     }
     
-    @media (max-width: 768px) {
-      .dropdown-menu {
-        position: static !important;
-        opacity: 1 !important;
-        visibility: visible !important;
-        transform: none !important;
-        background: transparent !important;
-        border: none !important;
-        box-shadow: none !important;
-        padding: 0 16px !important;
-      }
-      .dropdown-item {
-        padding: 8px 0 !important;
-      }
-    }
-    
     a:focus, a:active, button:focus, button:active {
       outline: none !important;
       box-shadow: 0 0 0 2px #a78bfa !important;
-要求
+    }
+    
     * {
       box-sizing: border-box;
     }
@@ -367,6 +379,7 @@ export default function Header() {
                     ...styles.dropdownMenu,
                     ...(isAboutDropdownOpen ? styles.dropdownMenuOpen : {}),
                   }}
+                  className="dropdown-menu"
                 >
                   {aboutMenuItems.map((item, index) => (
                     <Link
@@ -376,6 +389,7 @@ export default function Header() {
                         ...styles.dropdownItem,
                         ...(index === aboutMenuItems.length - 1 ? styles.dropdownItemLast : {}),
                       }}
+                      className={`dropdown-item ${location === item.path ? 'active' : ''}`}
                       onMouseEnter={(e) => Object.assign(e.target.style, styles.dropdownItemHover)}
                       onMouseLeave={(e) => {
                         e.target.style.background = 'transparent';
@@ -396,7 +410,7 @@ export default function Header() {
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                 onMouseEnter={(e) => (e.currentTarget.style.background = 'rgba(255,255,255,0.1)')}
                 onMouseLeave={(e) => (e.currentTarget.style.background = 'none')}
-                aria-label="Toggle mobile menu"
+                aria-label={isMobileMenuOpen ? 'Close mobile menu' : 'Open mobile menu'}
               >
                 {isMobileMenuOpen ? '✕' : '☰'}
               </button>
@@ -419,12 +433,13 @@ export default function Header() {
                 ...styles.navLink,
                 ...(location === item.path ? styles.navLinkActive : {}),
               }}
+              className={`nav-link-enhanced ${location === item.path ? 'active' : ''}`}
               onClick={() => setIsMobileMenuOpen(false)}
             >
               {item.label}
             </Link>
           ))}
-          <div style={{ marginTop: '16px', paddingTop: '16px', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+          <div style={{ ...styles.dropdownSection, marginTop: '16px', paddingTop: '16px', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
             <div style={{ ...styles.navLink, fontWeight: 600, color: '#a78bfa', marginBottom: '8px' }}>
               About
             </div>
@@ -437,6 +452,7 @@ export default function Header() {
                   ...(location === item.path ? styles.navLinkActive : {}),
                   paddingLeft: '16px',
                 }}
+                className={`dropdown-item ${location === item.path ? 'active' : ''}`}
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 {item.label}
