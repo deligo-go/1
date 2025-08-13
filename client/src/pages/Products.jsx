@@ -10,16 +10,18 @@ export default function Products() {
     tags: [],
     sort: 'newest'
   });
-
-  const { data: products, isLoading, error } = useProducts(filters);
   
-  // **NEW: Slideshow state management**
+  const { data: products, isLoading, error } = useProducts(filters);
+
+  // Slideshow state management
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
-  const [mousePosition, setMousePosition] = useState('center'); // 'left', 'right', 'center'
+  const [mousePosition, setMousePosition] = useState('center');
   const [isTransitioning, setIsTransitioning] = useState(false);
-  const [slideDirection, setSlideDirection] = useState('right'); // 'left' or 'right'
+  const [slideDirection, setSlideDirection] = useState('right');
+  const [isPaused, setIsPaused] = useState(false);
 
   const styles = {
+    // ... (keeping all previous styles but updating these specific ones)
     pageHeader: {
       padding: 'var(--spacing-3xl) 0 var(--spacing-2xl)',
       textAlign: 'center',
@@ -117,7 +119,17 @@ export default function Products() {
       margin: '0 auto 80px',
     },
 
-    // **UPDATED: Slideshow container**
+    // UPDATED: Slideshow wrapper to contain both cards and controls
+    slideshowWrapper: {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      width: '100%',
+      maxWidth: '1400px',
+      margin: '0 auto',
+      gap: '2rem',
+    },
+
     slideshowContainer: {
       display: 'flex',
       justifyContent: 'center',
@@ -125,55 +137,105 @@ export default function Products() {
       minHeight: '650px',
       position: 'relative',
       width: '100%',
-      maxWidth: '1400px',
-      margin: '0 auto',
       overflow: 'hidden',
       padding: '0 2rem',
-      // **NEW: Mouse tracking zones**
       cursor: 'none',
     },
 
-    // **NEW: Mouse position indicators**
     mouseIndicator: {
       position: 'absolute',
       top: '20px',
       right: '20px',
-      padding: '8px 16px',
+      padding: '6px 12px',
       background: 'rgba(255, 255, 255, 0.1)',
-      borderRadius: '20px',
-      fontSize: '12px',
+      borderRadius: '15px',
+      fontSize: '11px',
       color: 'white',
       zIndex: 100,
       backdropFilter: 'blur(10px)',
       border: '1px solid rgba(255, 255, 255, 0.2)',
     },
 
-    // **NEW: Progress indicator**
-    progressContainer: {
-      position: 'absolute',
-      bottom: '20px',
-      left: '50%',
-      transform: 'translateX(-50%)',
+    // UPDATED: Smaller, repositioned control buttons
+    controlsContainer: {
+      position: 'relative',
       display: 'flex',
-      gap: '8px',
-      zIndex: 100,
+      justifyContent: 'center',
+      alignItems: 'center',
+      gap: '12px',
+      background: 'rgba(0, 0, 0, 0.3)',
+      padding: '8px 12px',
+      borderRadius: '20px',
+      backdropFilter: 'blur(15px)',
+      border: '1px solid rgba(255, 255, 255, 0.1)',
+      boxShadow: '0 4px 20px rgba(0, 0, 0, 0.2)',
+    },
+
+    // UPDATED: Smaller control buttons
+    controlButton: {
+      width: '36px',
+      height: '36px',
+      borderRadius: '50%',
+      border: 'none',
+      background: 'linear-gradient(135deg, #6e4bc3, #a34b6e)',
+      color: 'white',
+      fontSize: '16px',
+      cursor: 'pointer',
+      transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      boxShadow: '0 3px 10px rgba(110, 75, 195, 0.3)',
+      position: 'relative',
+      overflow: 'hidden',
+    },
+
+    // UPDATED: Smaller pause/play button
+    pausePlayButton: {
+      width: '40px',
+      height: '40px',
+      borderRadius: '50%',
+      border: 'none',
+      background: isPaused 
+        ? 'linear-gradient(135deg, #ef4444, #dc2626)' 
+        : 'linear-gradient(135deg, #10b981, #059669)',
+      color: 'white',
+      fontSize: '18px',
+      cursor: 'pointer',
+      transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      boxShadow: isPaused 
+        ? '0 4px 15px rgba(239, 68, 68, 0.4)' 
+        : '0 4px 15px rgba(16, 185, 129, 0.4)',
+      position: 'relative',
+      overflow: 'hidden',
+      transform: 'scale(1)',
+    },
+
+    // UPDATED: Progress indicators repositioned
+    progressContainer: {
+      display: 'flex',
+      gap: '6px',
+      marginTop: '1rem',
     },
 
     progressDot: {
-      width: '12px',
-      height: '12px',
+      width: '10px',
+      height: '10px',
       borderRadius: '50%',
       background: 'rgba(255, 255, 255, 0.3)',
       transition: 'all 0.3s ease',
+      cursor: 'pointer',
     },
 
     progressDotActive: {
       background: 'linear-gradient(135deg, #a34b6e, #6e4bc3)',
       transform: 'scale(1.2)',
-      boxShadow: '0 2px 10px rgba(163, 75, 110, 0.5)',
+      boxShadow: '0 2px 8px rgba(163, 75, 110, 0.5)',
     },
 
-    // **UPDATED: Individual card for slideshow**
     slideshowCard: {
       position: 'absolute',
       width: '400px',
@@ -184,7 +246,6 @@ export default function Products() {
       backdropFilter: 'blur(40px)',
       padding: '2rem',
       cursor: 'pointer',
-      // **NEW: Smooth slideshow transitions**
       transition: 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)',
       transformOrigin: 'center center',
       overflow: 'hidden',
@@ -347,10 +408,10 @@ export default function Products() {
     },
   };
 
-  // **NEW: Featured products array**
+  // Featured products array
   const featuredProducts = products?.filter(product => [
     'GetMe',
-    'Pro-Verse',
+    'Pro-Verse', 
     'CafeAura',
     'Viruzverse Billing',
     'Invoicify',
@@ -359,7 +420,7 @@ export default function Products() {
     'FPS Shooting Game'
   ].includes(product.title)) || [];
 
-  // **NEW: Mouse position tracking**
+  // Mouse position tracking
   const handleMouseMove = useCallback((e) => {
     const container = e.currentTarget;
     const rect = container.getBoundingClientRect();
@@ -377,10 +438,57 @@ export default function Products() {
     }
   }, []);
 
-  // **NEW: Automatic slideshow effect**
-  useEffect(() => {
-    if (featuredProducts.length === 0) return;
+  // Manual navigation functions
+  const goToPrevious = useCallback(() => {
+    if (isTransitioning) return;
+    
+    setIsTransitioning(true);
+    setSlideDirection('left');
+    
+    setTimeout(() => {
+      setCurrentCardIndex(prevIndex => 
+        prevIndex === 0 ? featuredProducts.length - 1 : prevIndex - 1
+      );
+      setIsTransitioning(false);
+    }, 100);
+  }, [featuredProducts.length, isTransitioning]);
 
+  const goToNext = useCallback(() => {
+    if (isTransitioning) return;
+    
+    setIsTransitioning(true);
+    setSlideDirection('right');
+    
+    setTimeout(() => {
+      setCurrentCardIndex(prevIndex => 
+        prevIndex === featuredProducts.length - 1 ? 0 : prevIndex + 1
+      );
+      setIsTransitioning(false);
+    }, 100);
+  }, [featuredProducts.length, isTransitioning]);
+
+  // Toggle pause/play
+  const togglePause = useCallback(() => {
+    setIsPaused(prev => !prev);
+  }, []);
+
+  // Go to specific slide
+  const goToSlide = useCallback((index) => {
+    if (isTransitioning || index === currentCardIndex) return;
+    
+    setIsTransitioning(true);
+    setSlideDirection(index > currentCardIndex ? 'right' : 'left');
+    
+    setTimeout(() => {
+      setCurrentCardIndex(index);
+      setIsTransitioning(false);
+    }, 100);
+  }, [currentCardIndex, isTransitioning]);
+
+  // Automatic slideshow effect with pause control
+  useEffect(() => {
+    if (featuredProducts.length === 0 || isPaused) return;
+    
     const interval = setInterval(() => {
       setIsTransitioning(true);
       
@@ -395,12 +503,35 @@ export default function Products() {
         setIsTransitioning(false);
       }, 100);
       
-    }, 3000); // 5 seconds per slide
-
+    }, 3000); // 3 seconds per slide
+    
     return () => clearInterval(interval);
-  }, [featuredProducts.length, slideDirection]);
+  }, [featuredProducts.length, slideDirection, isPaused]);
 
-  // **NEW: Card positioning for slideshow**
+  // Keyboard navigation
+  useEffect(() => {
+    const handleKeyPress = (e) => {
+      switch(e.key) {
+        case 'ArrowLeft':
+          e.preventDefault();
+          goToPrevious();
+          break;
+        case 'ArrowRight':
+          e.preventDefault();
+          goToNext();
+          break;
+        case ' ':
+          e.preventDefault();
+          togglePause();
+          break;
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyPress);
+    return () => window.removeEventListener('keydown', handleKeyPress);
+  }, [goToPrevious, goToNext, togglePause]);
+
+  // Card positioning for slideshow
   const getCardStyle = (index) => {
     const isActive = index === currentCardIndex;
     const isPrev = index === (currentCardIndex - 1 + featuredProducts.length) % featuredProducts.length;
@@ -451,15 +582,20 @@ export default function Products() {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
           }
-
+          
           @keyframes slideIn {
             from { opacity: 0; transform: translate3d(100%, 0, 0); }
             to { opacity: 1; transform: translate3d(0, 0, 0); }
           }
-
+          
           @keyframes slideOut {
             from { opacity: 1; transform: translate3d(0, 0, 0); }
             to { opacity: 0; transform: translate3d(-100%, 0, 0); }
+          }
+
+          @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
           }
 
           .action-button:hover {
@@ -481,17 +617,44 @@ export default function Products() {
             transform: translateX(2px);
           }
 
-          /* **NEW: Custom cursor for slideshow areas** */
+          /* UPDATED: Smaller control button hover effects */
+          .control-button:hover {
+            transform: scale(1.15);
+            box-shadow: 0 4px 18px rgba(110, 75, 195, 0.5);
+          }
+
+          .control-button:active {
+            transform: scale(0.95);
+          }
+
+          .pause-play-button:hover {
+            transform: scale(1.15);
+          }
+
+          .pause-play-button:active {
+            transform: scale(0.95);
+          }
+
+          /* Pause button pulse animation when paused */
+          .pause-play-button.paused {
+            animation: pulse 2s infinite;
+          }
+
           .slideshow-container[data-mouse-position="left"] {
             cursor: w-resize;
           }
-
+          
           .slideshow-container[data-mouse-position="right"] {
             cursor: e-resize;
           }
-
+          
           .slideshow-container[data-mouse-position="center"] {
             cursor: default;
+          }
+
+          .progress-dot:hover {
+            transform: scale(1.4);
+            background: linear-gradient(135deg, #a34b6e, #6e4bc3);
           }
 
           @media (max-width: 1024px) {
@@ -502,6 +665,22 @@ export default function Products() {
             .slideshow-card {
               width: 90%;
               max-width: 400px;
+            }
+
+            .controls-container {
+              padding: 6px 10px;
+            }
+
+            .control-button {
+              width: 32px;
+              height: 32px;
+              fontSize: 14px;
+            }
+
+            .pause-play-button {
+              width: 36px;
+              height: 36px;
+              fontSize: 16px;
             }
           }
 
@@ -518,21 +697,42 @@ export default function Products() {
             .page-header {
               background-attachment: scroll;
             }
-
+            
             .slideshow-card {
               width: 95%;
               height: auto;
               min-height: 480px;
             }
-
+            
             .mouse-indicator {
               display: none;
+            }
+
+            .controls-container {
+              gap: 10px;
             }
           }
 
           @media (max-width: 480px) {
             .slideshow-card {
               padding: 1.5rem;
+            }
+
+            .controls-container {
+              gap: 8px;
+              padding: 6px 8px;
+            }
+
+            .control-button {
+              width: 30px;
+              height: 30px;
+              fontSize: 12px;
+            }
+
+            .pause-play-button {
+              width: 34px;
+              height: 34px;
+              fontSize: 14px;
             }
           }
         `}
@@ -600,92 +800,130 @@ export default function Products() {
                   Featured Products
                 </h2>
                 <p style={{ opacity: 0.8, fontSize: '1.1rem', color: 'rgba(255, 255, 255, 0.7)' }}>
-                  Move your mouse left or right to control slideshow direction
+                  Use controls below or keyboard arrows (←/→) and spacebar to pause/play
                 </p>
               </div>
               
-              {/* **NEW: Interactive Slideshow Container** */}
-              <div 
-                style={styles.slideshowContainer}
-                className="slideshow-container"
-                onMouseMove={handleMouseMove}
-                data-mouse-position={mousePosition}
-              >
-                {/* Mouse Position Indicator */}
-                <div style={styles.mouseIndicator} className="mouse-indicator">
-                  Direction: {slideDirection.toUpperCase()} | Zone: {mousePosition.toUpperCase()}
+              {/* UPDATED: Slideshow Wrapper with controls below */}
+              <div style={styles.slideshowWrapper}>
+                {/* Interactive Slideshow Container */}
+                <div 
+                  style={styles.slideshowContainer}
+                  className="slideshow-container"
+                  onMouseMove={handleMouseMove}
+                  data-mouse-position={mousePosition}
+                >
+                  {/* Mouse Position Indicator */}
+                  <div style={styles.mouseIndicator} className="mouse-indicator">
+                    {slideDirection.toUpperCase()} | {mousePosition.toUpperCase()} | {isPaused ? 'PAUSED' : 'AUTO'}
+                  </div>
+
+                  {/* Slideshow Cards */}
+                  {featuredProducts.map((product, index) => (
+                    <div
+                      key={product.id}
+                      style={{
+                        ...styles.slideshowCard,
+                        ...getCardStyle(index),
+                      }}
+                      className="slideshow-card"
+                    >
+                      {/* Card Glow Effect */}
+                      <div 
+                        style={{
+                          ...styles.cardGlow,
+                          opacity: index === currentCardIndex ? 1 : 0,
+                        }}
+                      ></div>
+
+                      {/* Card Content */}
+                      <div style={styles.cardContent}>
+                        <div style={styles.cardCategory}>
+                          {product.category?.name || 'Innovation'}
+                        </div>
+                        
+                        {product.images && product.images[0] && (
+                          <img
+                            src={product.images[0]}
+                            alt={product.title}
+                            style={styles.cardImage}
+                            onError={(e) => {
+                              e.target.style.display = 'none';
+                            }}
+                            loading="lazy"
+                          />
+                        )}
+                        
+                        <h3 style={styles.cardTitle}>
+                          {product.title}
+                        </h3>
+                        
+                        <p style={styles.cardDescription}>
+                          {product.shortDescription || product.description || 'Experience innovation at its finest with cutting-edge technology and seamless user experience.'}
+                        </p>
+                        
+                        <Link 
+                          href={`/products/${product.slug}`}
+                          style={styles.viewInfoButton}
+                          className="view-info-button"
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          <span className="button-shimmer" style={styles.buttonShimmer}></span>
+                          <span>View Info</span>
+                          <span className="button-icon" style={styles.buttonIcon}>→</span>
+                        </Link>
+                      </div>
+                    </div>
+                  ))}
                 </div>
 
-                {/* Progress Indicators */}
+                {/* UPDATED: Controls positioned below cards */}
+                <div style={styles.controlsContainer} className="controls-container">
+                  <button
+                    onClick={goToPrevious}
+                    style={styles.controlButton}
+                    className="control-button"
+                    disabled={isTransitioning}
+                    title="Previous slide (← key)"
+                  >
+                    ←
+                  </button>
+                  
+                  <button
+                    onClick={togglePause}
+                    style={styles.pausePlayButton}
+                    className={`pause-play-button ${isPaused ? 'paused' : ''}`}
+                    title={isPaused ? 'Resume slideshow (Space)' : 'Pause slideshow (Space)'}
+                  >
+                    {isPaused ? '▶️' : '⏸️'}
+                  </button>
+                  
+                  <button
+                    onClick={goToNext}
+                    style={styles.controlButton}
+                    className="control-button"
+                    disabled={isTransitioning}
+                    title="Next slide (→ key)"
+                  >
+                    →
+                  </button>
+                </div>
+
+                {/* Progress Indicators below controls */}
                 <div style={styles.progressContainer}>
                   {featuredProducts.map((_, index) => (
                     <div
                       key={index}
+                      onClick={() => goToSlide(index)}
                       style={{
                         ...styles.progressDot,
                         ...(index === currentCardIndex ? styles.progressDotActive : {})
                       }}
+                      className="progress-dot"
+                      title={`Go to slide ${index + 1}`}
                     />
                   ))}
                 </div>
-
-                {/* Slideshow Cards */}
-                {featuredProducts.map((product, index) => (
-                  <div
-                    key={product.id}
-                    style={{
-                      ...styles.slideshowCard,
-                      ...getCardStyle(index),
-                    }}
-                    className="slideshow-card"
-                  >
-                    {/* Card Glow Effect */}
-                    <div 
-                      style={{
-                        ...styles.cardGlow,
-                        opacity: index === currentCardIndex ? 1 : 0,
-                      }}
-                    ></div>
-
-                    {/* Card Content */}
-                    <div style={styles.cardContent}>
-                      <div style={styles.cardCategory}>
-                        {product.category?.name || 'Innovation'}
-                      </div>
-
-                      {product.images && product.images[0] && (
-                        <img
-                          src={product.images[0]}
-                          alt={product.title}
-                          style={styles.cardImage}
-                          onError={(e) => {
-                            e.target.style.display = 'none';
-                          }}
-                          loading="lazy"
-                        />
-                      )}
-
-                      <h3 style={styles.cardTitle}>
-                        {product.title}
-                      </h3>
-
-                      <p style={styles.cardDescription}>
-                        {product.shortDescription || product.description || 'Experience innovation at its finest with cutting-edge technology and seamless user experience.'}
-                      </p>
-
-                      <Link 
-                        href={`/products/${product.slug}`}
-                        style={styles.viewInfoButton}
-                        className="view-info-button"
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                        <span className="button-shimmer" style={styles.buttonShimmer}></span>
-                        <span>View Info</span>
-                        <span className="button-icon" style={styles.buttonIcon}>→</span>
-                      </Link>
-                    </div>
-                  </div>
-                ))}
               </div>
             </>
           ) : (
