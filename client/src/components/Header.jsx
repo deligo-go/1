@@ -30,45 +30,44 @@ export default function Header() {
       backdropFilter: 'blur(20px)',
       borderBottom: '1px solid rgba(255,255,255,0.1)',
       zIndex: 50,
-      padding: '16px 0',
     },
     headerContent: {
       display: 'flex',
       justifyContent: 'space-between',
       alignItems: 'center',
+      padding: '16px 0',
     },
     logoContainer: {
       display: 'flex',
       alignItems: 'center',
-      gap: '5px',
+      justifyContent: 'flex-start', // Left-align logo
+      gap: '10px',
       textDecoration: 'none',
       outline: 'none',
       border: 'none',
-      position: 'relative',
-      left: '-150px', // fully left aligned
     },
     logoImage: {
-      height: '100px',
+      height: '40px', // Smaller logo size
       width: 'auto',
       objectFit: 'contain',
-      position: 'relative',
-      top: '-30px', // moved slightly higher
-      left: '-390px'
+      transform: 'translateY(-4px)', // Move logo upward
     },
     logoText: {
-      fontSize: '40px',
+      fontSize: '28px',
       fontWeight: 700,
       textDecoration: 'none',
       outline: 'none',
       border: 'none',
       color: '#fff',
-      marginLeft: '10px',
-      left: '200px', // adjust text position
+      textAlign: 'center', // Center text horizontally
+      display: 'flex',
+      alignItems: 'center', // Center text vertically
+      transform: 'translateY(4px)', // Move logo text downward
     },
     nav: {
       display: 'flex',
       gap: '50px',
-      marginLeft: '50%', // push nav links to right corner
+      marginLeft: 'auto',
     },
     navMobile: {
       display: 'none',
@@ -82,6 +81,7 @@ export default function Header() {
       padding: '24px',
       gap: '16px',
       zIndex: 40,
+      overflowY: 'auto',
     },
     navMobileOpen: {
       display: 'flex',
@@ -91,13 +91,12 @@ export default function Header() {
       textDecoration: 'none',
       fontWeight: 500,
       transition: 'color 0.2s ease-in-out',
-      position: 'relative',
-      padding: 'var(--spacing-sm) 0',
+      padding: '8px 0',
       outline: 'none',
       border: 'none',
     },
     navLinkActive: {
-      color: '#a78bfa', // accent color
+      color: '#a78bfa',
     },
     headerActions: {
       display: 'flex',
@@ -123,7 +122,6 @@ export default function Header() {
       textDecoration: 'none',
       fontWeight: 500,
       transition: 'color 0.2s ease-in-out',
-      position: 'relative',
       padding: '8px 0',
       background: 'none',
       border: 'none',
@@ -187,26 +185,133 @@ export default function Header() {
     chevronRotated: {
       transform: 'rotate(180deg)',
     },
-    rightSection: {
-      display: 'flex',
-      alignItems: 'center',
-      gap: '32px',
-      marginLeft: 'auto', // push to right
-    }
   };
 
   const mobileStyles = `
+    .container {
+      padding: 0 16px;
+      max-width: 100%;
+      margin: 0 auto;
+    }
+    
     @media (max-width: 768px) {
       .nav-desktop { display: none !important; }
       .mobile-menu-btn { display: block !important; }
-      .logo-text { font-size: 28px !important; }
-      .logo-image { height: 48px !important; }
+      .logo-text { 
+        font-size: 22px !important; 
+        text-align: center !important;
+        display: flex !important;
+        align-items: center !important;
+        transform: translateY(3px) !important; // Smaller downward shift for mobile
+      }
+      .logo-image { 
+        height: 36px !important; // Smaller logo for mobile
+        transform: translateY(-4px) !important; // Move upward in mobile
+      }
+      .logo-container {
+        justify-content: flex-start !important; // Left-align logo
+      }
+      .container { 
+        padding: 0 12px; 
+      }
+      .mobile-nav-menu {
+        padding: 24px !important;
+        overflow-y: auto;
+        height:3px calc(100vh - 80px);
+      }
+    }
+    
+    @media (max-width: 600px) {
+      .logo-text { 
+        font-size: 20px !important;
+        transform: translateY(3px) !important;
+      }
+      .logo-image { 
+        height: 32px !important; 
+        transform: translateY(-3px) !important;
+      }
+      .container { padding: 0 8px; }
+    }
+    
+    @media (max-width: 480px) {
+      .logo-text { 
+        font-size: 18px !important;
+        transform: translateY(3px) !important;
+      }
+      .logo-image { 
+        height: 30px !important; 
+        transform: translateY(-3px) !important;
+      }
+      .mobile-menu-btn { padding: 8px !important; }
+    }
+    
+    @media (max-width: 400px) {
+      .logo-text { 
+        font-size: 16px !important;
+        transform: translateY(2px) !important;
+      }
+      .logo-image { 
+        height: 28px !important; 
+        transform: translateY(-2px) !important;
+      }
+      .container { padding: 0 6px; }
+    }
+    
+    @media (max-width: 360px) {
+      .logo-text { 
+        font-size: 14px !important;
+        transform: translateY(2px) !important;
+      }
+      .logo-image { 
+        height: 26px !important; 
+        transform: translateY(-2px) !important;
+      }
+    }
+    
+    @media (min-width: 1024px) {
+      .container { padding: 0 24px; }
+    }
+    
+    @media (min-width: 1200px) {
+      .container {
+        max-width: 1200px;
+        padding: 0 24px;
+      }
+    }
+    
+    @media (min-width: 1400px) {
+      .container {
+        max-width: 1400px;
+        padding: 0 32px;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .dropdown-menu {
+        position: static !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        transform: none !important;
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 16px !important;
+      }
+      .dropdown-item {
+        padding: 8px 0 !important;
+      }
     }
     
     a:focus, a:active, button:focus, button:active {
       outline: none !important;
-      border: none !important;
-      box-shadow: none !important;
+      box-shadow: 0 0 0 2px #a78bfa !important;
+要求
+    * {
+      box-sizing: border-box;
+    }
+    
+    body {
+      overflow-x: hidden;
     }
   `;
 
@@ -216,122 +321,103 @@ export default function Header() {
       <header style={styles.header}>
         <div className="container">
           <div style={styles.headerContent}>
-            {/* Logo */}
-           <Link href="/" style={styles.logoContainer} className="text-gradient">
-  <span style={styles.logoText} className="logo-text">
-    VIRUZVERSE
-  </span>
-  <img
-    src="/logo.png"
-    alt="VIRUZVERSE Logo"
-    style={styles.logoImage}
-    className="logo-image"
-  />
-</Link>
-
-
-            {/* Nav */}
-            <div style={styles.rightSection}>
-              <nav style={styles.nav} className="nav-desktop" role="navigation">
-                {navItems.map(item => (
-                  <Link
-                    key={item.path}
-                    href={item.path}
-                    className={`nav-link-enhanced ${location === item.path ? 'active' : ''}`}
-                    style={{
-                      ...styles.navLink,
-                      ...(location === item.path ? styles.navLinkActive : {})
-                    }}
-                  >
-                    {item.label}
-                  </Link>
-                ))}
-
-                {/* About Dropdown */}
-                <div
-                  style={styles.dropdownContainer}
-                  onMouseEnter={() => setIsAboutDropdownOpen(true)}
-                  onMouseLeave={() => setIsAboutDropdownOpen(false)}
+            <Link href="/" style={styles.logoContainer}>
+              <img src="/logo.png" alt="Viruzverse Logo" style={styles.logoImage} />
+              <span style={styles.logoText} className="text-gradient">VIRUZVERSE</span>
+            </Link>
+            
+            <nav style={styles.nav} className="nav-desktop" role="navigation" aria-label="Main navigation">
+              {navItems.map(item => (
+                <Link
+                  key={item.path}
+                  href={item.path}
+                  style={{
+                    ...styles.navLink,
+                    ...(location === item.path ? styles.navLinkActive : {}),
+                  }}
+                  className={`nav-link-enhanced ${location === item.path ? 'active' : ''}`}
                 >
-                  <button
+                  {item.label}
+                </Link>
+              ))}
+              <div
+                style={styles.dropdownContainer}
+                onMouseEnter={() => setIsAboutDropdownOpen(true)}
+                onMouseLeave={() => setIsAboutDropdownOpen(false)}
+              >
+                <button
+                  style={{
+                    ...styles.dropdownButton,
+                    ...(aboutMenuItems.some(item => location === item.path) ? styles.dropdownButtonActive : {}),
+                  }}
+                  className="nav-link-enhanced"
+                >
+                  About
+                  <span
                     style={{
-                      ...styles.dropdownButton,
-                      ...(aboutMenuItems.some(item => location === item.path)
-                        ? styles.dropdownButtonActive
-                        : {})
+                      ...styles.chevron,
+                      ...(isAboutDropdownOpen ? styles.chevronRotated : {}),
                     }}
                   >
-                    About
-                    <span
+                    ▼
+                  </span>
+                </button>
+                <div
+                  style={{
+                    ...styles.dropdownMenu,
+                    ...(isAboutDropdownOpen ? styles.dropdownMenuOpen : {}),
+                  }}
+                >
+                  {aboutMenuItems.map((item, index) => (
+                    <Link
+                      key={item.path}
+                      href={item.path}
                       style={{
-                        ...styles.chevron,
-                        ...(isAboutDropdownOpen ? styles.chevronRotated : {})
+                        ...styles.dropdownItem,
+                        ...(index === aboutMenuItems.length - 1 ? styles.dropdownItemLast : {}),
+                      }}
+                      onMouseEnter={(e) => Object.assign(e.target.style, styles.dropdownItemHover)}
+                      onMouseLeave={(e) => {
+                        e.target.style.background = 'transparent';
+                        e.target.style.color = '#ffffff';
                       }}
                     >
-                      ▼
-                    </span>
-                  </button>
-                  <div
-                    style={{
-                      ...styles.dropdownMenu,
-                      ...(isAboutDropdownOpen ? styles.dropdownMenuOpen : {})
-                    }}
-                  >
-                    {aboutMenuItems.map((item, index) => (
-                      <Link
-                        key={item.path}
-                        href={item.path}
-                        style={{
-                          ...styles.dropdownItem,
-                          ...(index === aboutMenuItems.length - 1
-                            ? styles.dropdownItemLast
-                            : {})
-                        }}
-                        onMouseEnter={(e) => {
-                          Object.assign(e.target.style, styles.dropdownItemHover);
-                        }}
-                        onMouseLeave={(e) => {
-                          e.target.style.background = 'transparent';
-                          e.target.style.color = '#fff';
-                        }}
-                      >
-                        {item.label}
-                      </Link>
-                    ))}
-                  </div>
+                      {item.label}
+                    </Link>
+                  ))}
                 </div>
-              </nav>
-
-              {/* Mobile Menu Button */}
-              <div style={styles.headerActions}>
-                <button
-                  style={styles.mobileMenuBtn}
-                  className="mobile-menu-btn"
-                  onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                >
-                  {isMobileMenuOpen ? '✕' : '☰'}
-                </button>
               </div>
+            </nav>
+            
+            <div style={styles.headerActions}>
+              <button
+                style={styles.mobileMenuBtn}
+                className="mobile-menu-btn"
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                onMouseEnter={(e) => (e.currentTarget.style.background = 'rgba(255,255,255,0.1)')}
+                onMouseLeave={(e) => (e.currentTarget.style.background = 'none')}
+                aria-label="Toggle mobile menu"
+              >
+                {isMobileMenuOpen ? '✕' : '☰'}
+              </button>
             </div>
           </div>
         </div>
 
-        {/* Mobile Nav */}
         <nav
           className="mobile-nav-menu"
           style={{
             ...styles.navMobile,
-            ...(isMobileMenuOpen ? styles.navMobileOpen : {})
+            ...(isMobileMenuOpen ? styles.navMobileOpen : {}),
           }}
         >
           {navItems.map(item => (
             <Link
               key={item.path}
               href={item.path}
-              className="mobile-nav-link"
               style={{
                 ...styles.navLink,
-                ...(location === item.path ? styles.navLinkActive : {})
+                ...(location === item.path ? styles.navLinkActive : {}),
               }}
               onClick={() => setIsMobileMenuOpen(false)}
             >
@@ -346,12 +432,10 @@ export default function Header() {
               <Link
                 key={item.path}
                 href={item.path}
-                className="mobile-nav-link"
                 style={{
                   ...styles.navLink,
+                  ...(location === item.path ? styles.navLinkActive : {}),
                   paddingLeft: '16px',
-                  fontSize: '14px',
-                  ...(location === item.path ? styles.navLinkActive : {})
                 }}
                 onClick={() => setIsMobileMenuOpen(false)}
               >
