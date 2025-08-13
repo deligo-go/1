@@ -75,10 +75,10 @@ const Footer = () => {
             
             <div style={styles.contactInfo}>
               <h3 style={styles.sectionTitle}>Connect</h3>
-              <a href="mailto:viruzverse@proton.me" 
+              <a href="mailto:contact@viruzverse.tech" 
                  style={styles.contactItem} 
                  className="footer-hover">
-                Email: viruzverse@proton.me
+                Email: contact@viruzverse.tech
               </a>
               <a href="tel:+919659008000" 
                  style={styles.contactItem} 
