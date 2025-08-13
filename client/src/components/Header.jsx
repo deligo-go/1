@@ -351,7 +351,7 @@ export default function Header() {
     
     a:focus, a:active, button:focus, button:active {
       outline: none !important;
-      box-shadow: 0 0 0 2px #a78bfa !important;
+      box-shadow: none !important;
     }
     
     * {
