@@ -16,7 +16,6 @@ export default function Layout({ children }) {
 
   return (
     <div style={styles.container}>
-      <a href="#main-content" className="skip-to-content">Skip to main content</a>
       <Header />
       <main id="main-content" style={styles.main}>
         {children}
