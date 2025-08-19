@@ -9,7 +9,7 @@ import cloudTeamImg from '../assests/cloud team.png';
 import appDevTeamImg from '../assests/application developer team.jpg';
 import fullStackTeamImg from '../assests/fullstack team.jpg';
 import mediaBrandingTeamImg from '../assests/media and branding team.jpg';
-import digitalMarketingTeamImg from '../assests/digital marketing team.jpeg';
+import digitalMarketingTeamImg from '../assests/digital marketing team..jpg';
 
 // Import member images
 import praneshImg from '../assests/Team members/pranesh.jpg';
@@ -28,6 +28,9 @@ import nivethaImg from '../assests/Team members/nivetha.png';
 import susindharanImg from '../assests/Team members/susindharan.jpg';
 import jithendarImg from '../assests/Team members/jithendar.png';
 import safil from '../assests/Team members/safil.jpeg';
+import vishwadharanImg from '../assests/Team members/vishwadharan.jpg';
+import abdheyImg from '../assests/Team members/abdhey.jpg';
+import sarveshImg from '../assests/Team members/sarvesh.jpg';
 
 export default function Teams() {
   const [match, params] = useRoute('/teams/:teamId');
@@ -219,7 +222,7 @@ export default function Teams() {
           name: 'Sarvesh',
           role: 'Senior Mobile App Developer',
           bio: 'Experienced mobile app developer specializing in cross-platform solutions and native iOS/Android development. Expert in creating scalable and user-friendly mobile applications.',
-          avatar: '👨‍💻',
+          avatar: sarveshImg,
           email: 'sarvesh@viruzverse.com',
           linkedin: 'https://linkedin.com/in/sarvesh-mobile',
           skills: ['React Native', 'Flutter', 'iOS Development', 'Android Development', 'TypeScript', 'Firebase'],
@@ -655,6 +658,84 @@ export default function Teams() {
       maxWidth: '400px',
       margin: '0 auto var(--spacing-md)',
       lineHeight: 1.5,
+    },
+    leadershipSection: {
+      padding: 'var(--spacing-3xl) 0',
+      background: 'rgba(255,255,255,0.01)',
+      position: 'relative',
+    },
+    leadershipGrid: {
+      display: 'grid',
+      gridTemplateColumns: 'repeat(auto-fit, minmax(380px, 1fr))',
+      gap: '48px',
+      maxWidth: '1000px',
+      margin: '0 auto',
+      padding: '0 20px',
+    },
+    leadershipCard: {
+      borderRadius: '28px',
+      border: '2px solid rgba(255,255,255,0.08)',
+      transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
+      position: 'relative',
+      overflow: 'hidden',
+      height: '400px',
+      backgroundSize: 'cover',
+      backgroundPosition: 'center center',
+      backgroundRepeat: 'no-repeat',
+      cursor: 'pointer',
+      boxShadow: '0 8px 32px rgba(0,0,0,0.12)',
+      backgroundAttachment: 'local',
+    },
+    leadershipAvatar: {
+      width: '100px',
+      height: '100px',
+      borderRadius: '50%',
+      objectFit: 'cover',
+      border: '4px solid rgba(255,255,255,0.2)',
+      marginBottom: 'var(--spacing-lg)',
+    },
+    leadershipName: {
+      fontSize: '32px',
+      fontWeight: 700,
+      color: '#ffffff',
+      marginBottom: '8px',
+      letterSpacing: '-0.02em',
+      textShadow: '0 4px 20px rgba(0,0,0,0.8)',
+    },
+    leadershipTitle: {
+      fontSize: '14px',
+      fontWeight: 600,
+      padding: '10px 20px',
+      borderRadius: '25px',
+      display: 'inline-block',
+      textAlign: 'center',
+      color: '#ffffff',
+      textTransform: 'uppercase',
+      letterSpacing: '0.5px',
+      border: '1px solid rgba(255,255,255,0.2)',
+    },
+    leadershipBio: {
+      fontSize: '15px',
+      lineHeight: 1.6,
+      opacity: 0.9,
+      color: '#e2e8f0',
+      marginBottom: 'var(--spacing-lg)',
+      flex: 1,
+    },
+    leadershipSkills: {
+      display: 'flex',
+      flexWrap: 'wrap',
+      gap: 'var(--spacing-xs)',
+      marginTop: 'auto',
+    },
+    leadershipSkill: {
+      background: 'rgba(255,255,255,0.1)',
+      padding: '6px 12px',
+      borderRadius: 'var(--radius-sm)',
+      fontSize: '12px',
+      fontWeight: 500,
+      opacity: 0.9,
+      border: '1px solid rgba(255,255,255,0.1)',
     }
   };
 
@@ -664,6 +745,48 @@ export default function Teams() {
     countries: 8,
     experience: '10+'
   };
+
+  // Leadership team data
+  const leadership = [
+    {
+      id: 'founder',
+      name: 'Abdhey',
+      title: 'Founder ',
+      bio: 'Visionary entrepreneur and technology leader with extensive experience in AI, VR, and cybersecurity. Abhey founded VIRUZVERSE with the mission to revolutionize digital transformation through innovative solutions.',
+      avatar: abdheyImg,
+      email: 'abhey@viruzverse.com',
+      linkedin: 'https://linkedin.com/in/abhey',
+      skills: ['Strategic Leadership', 'Product Vision', 'Technology Innovation', 'Business Development'],
+      experience: '8+ years',
+      education: 'MS in Computer Science',
+      color: '#6e4bc3',
+      achievements: [
+        'Founded VIRUZVERSE and grew it to 20+ team members',
+        'Led development of 50+ innovative digital solutions',
+        'Established partnerships with major technology companies',
+        'Recognized as emerging tech entrepreneur of the year'
+      ]
+    },
+    {
+      id: 'cofounder',
+      name: 'Vishwadharan',
+      title: 'Co-founder & CEO',
+      bio: 'Technical architect and innovation leader specializing in full-stack development and system architecture. Vishwadharan drives the technical vision and ensures cutting-edge technology implementation across all VIRUZVERSE solutions.',
+      avatar: vishwadharanImg,
+      email: 'vishwadharan@viruzverse.com',
+      linkedin: 'https://linkedin.com/in/vishwadharan',
+      skills: ['System Architecture', 'Full-Stack Development', 'Technical Leadership', 'Innovation Strategy'],
+      experience: '7+ years',
+      education: 'BS in Computer Science',
+      color: '#a34b6e',
+      achievements: [
+        'Architected scalable systems serving 100K+ users',
+        'Led technical teams across multiple projects',
+        'Pioneered implementation of AI/ML solutions',
+        'Published research on modern web architectures'
+      ]
+    }
+  ];
 
   return (
     <>
@@ -679,7 +802,101 @@ export default function Teams() {
         </div>
       </section>
 
-      
+      {/* Leadership Section */}
+      <section style={styles.leadershipSection}>
+        <div className="container">
+          <h2 style={styles.sectionTitle}>Leadership</h2>
+          <p style={styles.sectionDescription}>
+            Meet the visionary leaders driving VIRUZVERSE's mission to revolutionize digital transformation through innovative technology solutions.
+          </p>
+          <div style={styles.leadershipGrid}>
+            {leadership.map((leader, index) => (
+              <div
+                key={leader.id}
+                style={{
+                  ...styles.leadershipCard,
+                  backgroundImage: `url(${leader.avatar})`,
+                  borderColor: `${leader.color}20`,
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'translateY(-12px) scale(1.03)';
+                  e.currentTarget.style.boxShadow = `0 30px 60px ${leader.color}25, 0 0 0 1px ${leader.color}40`;
+                  e.currentTarget.style.borderColor = `${leader.color}60`;
+                  
+                  // Enhanced glow effect
+                  const glowOverlay = e.currentTarget.querySelector('.glow-overlay');
+                  if (glowOverlay) {
+                    glowOverlay.style.opacity = '0.6';
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'translateY(0) scale(1)';
+                  e.currentTarget.style.boxShadow = '0 8px 32px rgba(0,0,0,0.12)';
+                  e.currentTarget.style.borderColor = `${leader.color}20`;
+                  
+                  const glowOverlay = e.currentTarget.querySelector('.glow-overlay');
+                  if (glowOverlay) {
+                    glowOverlay.style.opacity = '0';
+                  }
+                }}
+              >
+                {/* Background gradient overlay */}
+                <div style={{
+                  position: 'absolute',
+                  top: '0',
+                  left: '0',
+                  right: '0',
+                  bottom: '0',
+                  background: 'linear-gradient(135deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.05) 40%, rgba(0,0,0,0.4) 100%)',
+                  zIndex: 1,
+                }} />
+
+                {/* Animated glow overlay */}
+                <div 
+                  className="glow-overlay"
+                  style={{
+                    position: 'absolute',
+                    top: '0',
+                    left: '0',
+                    right: '0',
+                    bottom: '0',
+                    background: `radial-gradient(circle at 50% 50%, ${leader.color}15 0%, transparent 70%)`,
+                    opacity: '0',
+                    transition: 'opacity 0.5s ease',
+                    pointerEvents: 'none',
+                    zIndex: 2,
+                  }}
+                />
+                
+                {/* Content overlay */}
+                <div style={{ 
+                  position: 'absolute',
+                  bottom: '0',
+                  left: '0',
+                  right: '0',
+                  zIndex: 3, 
+                  textAlign: 'center',
+                  padding: '32px 24px',
+                  background: 'linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.4) 70%, transparent 100%)',
+                }}>
+                  <h3 style={{
+                    ...styles.leadershipName,
+                  }}>{leader.name}</h3>
+                  <div 
+                    style={{
+                      ...styles.leadershipTitle,
+                      background: `linear-gradient(135deg, ${leader.color}80, ${leader.color}60)`,
+                      boxShadow: `0 4px 20px ${leader.color}30`,
+                    }}
+                  >
+                    {leader.title}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* Teams Grid */}
       <section style={styles.section}>
