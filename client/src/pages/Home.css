@@ -859,3 +859,27 @@ body {
         font-size: 0.95rem;
     }
 }
+
+
+/* Horizontal scrolling for "Our Digital Capabilities" on mobile */
+@media (max-width: 768px) {
+  .capabilities-row {
+    display: flex !important;         /* Change to row layout */
+    flex-wrap: nowrap;                 /* No wrapping */
+    overflow-x: auto;                  /* Enable horizontal scroll */
+    gap: 16px;                         /* Space between cards */
+    padding-bottom: 12px;              /* Small padding for smooth scroll */
+    -webkit-overflow-scrolling: touch; /* Smooth scroll on iOS */
+    scrollbar-width: none;             /* Hide scrollbar in Firefox */
+  }
+
+  .capabilities-row::-webkit-scrollbar {
+    display: none; /* Hide scrollbar in WebKit browsers */
+  }
+
+  .capability-card {
+    flex: 0 0 80%;   /* Make each card wide enough to be swipeable */
+    min-width: 280px;
+    max-width: 320px;
+  }
+}
