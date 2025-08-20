@@ -27,7 +27,7 @@ import jayaSudhanImg from '../assests/Team members/jaya sudhan.png';
 import nivethaImg from '../assests/Team members/nivetha.png';
 import susindharanImg from '../assests/Team members/susindharan.jpg';
 import jithendarImg from '../assests/Team members/jithendar.png';
-import safil from '../assests/Team members/safil.jpeg';
+import safil from '../assests/Team members/safil.jpg';
 import vishwadharanImg from '../assests/Team members/vishwadharan.jpg';
 import abdheyImg from '../assests/Team members/abdhey.jpg';
 import sarveshImg from '../assests/Team members/sarvesh.jpg';
