@@ -87,13 +87,13 @@ const Footer = () => {
               <div className="contact-item location-item">
                 <MapPin size={14} />
                 <div className="location-details">
-                  <div className="location-entry">
+                  {/* <div className="location-entry">
                     <div className="location-header">
                       <span className="flag">🇦🇪</span>
                       <span className="location-label">Headquarters:</span>
                     </div>
                     <span>Dubai Internet City, Building 1, Sheikh Zayed Road, Dubai, UAE</span>
-                  </div>
+                  </div> */}
                   <div className="location-entry">
                     <div className="location-header">
                       <span className="flag">🇮🇳</span>
