@@ -387,7 +387,7 @@ export default function About() {
       </section>
 
       {/* Team */}
-      <section style={styles.section}>
+      {/* <section style={styles.section}>
         <div className="container">
           <h2 style={styles.sectionTitle} className="text-gradient">
             Our Team
@@ -418,7 +418,7 @@ export default function About() {
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Company Timeline */}
       <section style={styles.section}>
