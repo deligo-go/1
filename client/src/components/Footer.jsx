@@ -39,7 +39,7 @@ const Footer = () => {
                  rel="noopener noreferrer">
                 <Linkedin size={18} />
               </a>
-              <a href="mailto:viruzverse@proton.me" 
+              <a href="mailto:contact@viruzverse.in" 
                  className="social-icon email" 
                  aria-label="Email">
                 <Mail size={18} />
@@ -76,13 +76,13 @@ const Footer = () => {
             <div className="contact-list">
               <div className="contact-item">
                 <Mail size={14} />
-                <a href="mailto:contact@viruzverse.tech">contact@viruzverse.tech</a>
+                <a href="mailto:contact@viruzverse.tech">contact@viruzverse.in</a>
               </div>
               
-              <div className="contact-item">
+              {/* <div className="contact-item">
                 <Phone size={14} />
                 <a href="tel:+919659008000">+91 96590 08000</a>
-              </div>
+              </div> */}
               
               <div className="contact-item location-item">
                 <MapPin size={14} />
