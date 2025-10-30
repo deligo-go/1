@@ -80,10 +80,10 @@ const Contact = () => {
           <ContactInfoItem 
             icon={<Mail size={20} />} 
             label="Email Us" 
-            value="contact@viruzverse.tech" 
-            href="mailto:contact@viruzverse.tech"
+            value="contact@viruzverse.in" 
+            href="mailto:contact@viruzverse.in"
           />
-          <ContactInfoItem 
+          {/* <ContactInfoItem 
             icon={<Phone size={20} />} 
             label="Call Us" 
             value="+91 96590 08000" 
@@ -93,7 +93,7 @@ const Contact = () => {
             icon={<MapPin size={20} />} 
             label="Headquarters" 
             value="Dubai Internet City, Building 1, Sheikh Zayed Road, Dubai, UAE"
-          />
+          /> */}
           <ContactInfoItem 
             icon={<MapPin size={20} />} 
             label="Branch Office" 
