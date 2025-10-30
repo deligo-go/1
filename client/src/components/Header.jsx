@@ -15,7 +15,7 @@ export default function Header() {
 
   const aboutMenuItems = [
     { path: '/mission', label: 'Our Mission' },
-    { path: '/teams', label: 'Our Teams' },
+    // { path: '/teams', label: 'Our Teams' },
     { path: '/journey', label: 'Our Journey' },
     { path: '/contact', label: 'Contact Us' },
   ];
